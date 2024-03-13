@@ -1,5 +1,5 @@
-<p>{{ data }}</p>
+<p *ngIf="userProfile">Hello, {{ userProfile.givenName }}</p>
 
-<p>{{ email }}</p>
+<p *ngIf="dataResult">Data: {{ dataResult.data }}</p>
 
-<a (click)="logout()" style="color: blue; text-decoration: underline; cursor: pointer;">Logout</a>
+<a (click)="logout();" style="color:blue; text-decoration: underline; cursor:pointer;">logout</a>
