@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {environment} from "../../environments/environment.development";
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
+import {UtilsService} from "../dao/impl/UtilsService";
 
 @Component({
   selector: 'app-login',
@@ -11,11 +12,11 @@ import {HttpClient} from "@angular/common/http";
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit {
-  loginAsked = false
 
   constructor(private activatedRoute: ActivatedRoute,
               private http: HttpClient,
-              private router: Router) {
+              private router: Router,
+              private utilsService: UtilsService) {
   }
 
   ngOnInit(): void {
@@ -30,14 +31,11 @@ export class LoginComponent implements OnInit {
         return;
       }
       console.log("start pkce from begin")
-      if (!this.loginAsked) {
-        this.showAuthWindow();
-      }
+      this.showAuthWindow();
     });
   }
 
   private showAuthWindow() {
-    this.loginAsked = true;
     console.log("LoginComponent -> showAuthWindow");
     const state = this.randomString(40);
     localStorage.setItem('state', state);
@@ -72,20 +70,31 @@ export class LoginComponent implements OnInit {
     }
     localStorage.removeItem('state');
     console.log(code);
-    this.http.post(environment.bffURI + '/token', code, {
+    this.http.post(environment.bffUrl + '/token', code, {
       headers: {
         'Content-Type': 'application/json; charset=UTF-8'
       }
     }).subscribe({
       next: ((response: any) => {
-        this.router.navigate(['/data']);
-        // this.loginAsked = false
+        this.initUserIfNotExist();
       }),
       error: (error => {
         console.log(error);
-        // this.loginAsked = false
       })
     });
 
+  }
+
+  private initUserIfNotExist() {
+    this.utilsService.initUserIfNotExists().subscribe({
+      next: ((response: any) => {
+        console.log(response);
+        this.router.navigate(['/main']);
+      }),
+      error: ((error) => {
+        console.log(error);
+        this.router.navigate(['/main']);
+      })
+    })
   }
 }
