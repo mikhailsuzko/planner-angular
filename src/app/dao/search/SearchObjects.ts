@@ -1,6 +1,9 @@
 export class CategorySearchValues {
-  // title: string = null;
-  // email: string = null;
+  title: string;
+
+  constructor(title: string) {
+    this.title = title;
+  }
 }
 
 export class PrioritySearchValues {

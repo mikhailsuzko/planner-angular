@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {environment} from "../../environments/environment.development";
+import {environment} from "../../../environments/environment.development";
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
-import {UtilsService} from "../dao/impl/UtilsService";
+import {UtilsService} from "../../dao/impl/UtilsService";
 
 @Component({
   selector: 'app-login',

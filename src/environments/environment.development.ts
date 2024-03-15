@@ -4,5 +4,6 @@ export const environment = {
   loginUrl: "https://localhost:4200",
   bffUrl: 'https://localhost:8902/bff',
   backendUrl: 'https://localhost:8765',
+  frontendURL: 'https://localhost:4200'
 
 };

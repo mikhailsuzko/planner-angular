@@ -12,7 +12,7 @@ export class CommonService<T> implements CommonDao<T> {
   }
 
   add(t: T): Observable<T> {
-    let httpMethodElement = HttpMethod[HttpMethod.PUT];
+    let httpMethodElement = HttpMethod[HttpMethod.POST];
     const backendUrl = this.backendUrl + '/add';
     const operation = new Operation(httpMethodElement, backendUrl, t);
     return this.sendOperation(operation);
@@ -26,9 +26,9 @@ export class CommonService<T> implements CommonDao<T> {
   }
 
   findById(id: number): Observable<T> {
-    let httpMethodElement = HttpMethod[HttpMethod.POST];
-    const backendUrl = this.backendUrl + '/id';
-    const operation = new Operation(httpMethodElement, backendUrl, id);
+    let httpMethodElement = HttpMethod[HttpMethod.GET];
+    const backendUrl = this.backendUrl + '/id/' + id;
+    const operation = new Operation(httpMethodElement, backendUrl, null);
     return this.sendOperation(operation);
   }
 
@@ -40,7 +40,7 @@ export class CommonService<T> implements CommonDao<T> {
   }
 
   update(t: T): Observable<any> {
-    let httpMethodElement = HttpMethod[HttpMethod.PATCH];
+    let httpMethodElement = HttpMethod[HttpMethod.PUT];
     const backendUrl = this.backendUrl + '/update';
     const operation = new Operation(httpMethodElement, backendUrl, t);
     return this.sendOperation(operation);

@@ -1,0 +1,73 @@
+<div class="container">
+
+  <div class="row">
+    <div class="col-2">
+      <button mat-icon-button (click)="clickEvent()">
+        <mat-icon>keyboard_arrow_left</mat-icon>
+      </button>
+    </div>
+
+    <div class="col-7 align-self-center text-center">
+      <p class="nav-title">{{ 'CATEGORY.CATEGORIES' | translate }}</p>
+    </div>
+    @if (!isMobile) {
+      <div class="col-2 align-self-center text-center ">
+        <button mat-mini-fab color="primary" (click)="addCategory()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    } @else {
+      <div class="col-12 text-center">
+        <button class="add-icon" (click)="addCategory()">
+            + Добавить
+          </button>
+        </div>
+    }
+  </div>
+</div>
+<hr>
+
+<div class="search-category-area">
+  <mat-form-field class="search-form-field">
+    <mat-label>{{ 'CATEGORY.SEARCH' | translate }}</mat-label>
+    <input matInput maxlength="15" type="text" placeholder="{{'CATEGORY.SEARCH' | translate}}"
+           [(ngModel)]="searchTitle"
+           (ngModelChange)="search()"
+           (keydown.escape)="clearAndSearch()">
+    @if (searchTitle) {
+      <button matSuffix mat-icon-button aria-label="Clear" (click)="clearAndSearch()">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+    @if (searchTitle) {
+      <button matSuffix mat-icon-button aria-label="Search" (click)="search()">
+        <mat-icon>search</mat-icon>
+      </button>
+    }
+  </mat-form-field>
+  </div>
+
+<!-- Categories -->
+<mat-list-item class="list-group-item-action">
+  <a matListItemTitle>{{ 'CATEGORY.ALL' | translate }}</a>
+</mat-list-item>
+<mat-divider/>
+@if (!categories() || categories().length === 0) {
+  <p class="not-found">{{ 'COMMON.NOT-FOUND' |translate }}</p>
+}
+
+<mat-list>
+  @for (category of categories(); track category) {
+    <mat-list-item class="list-group-item-action">
+      <a matListItemTitle>{{ category.title }}</a>
+      <button mat-icon-button matListItemMeta class="edit-category-icon" (click)="edit(category)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <a matListItemMeta class="uncompleted-count" aria-disabled="true">
+        {{ category.uncompletedCount }}
+        </a>
+    </mat-list-item>
+  }
+</mat-list>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

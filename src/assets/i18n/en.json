@@ -1,0 +1,122 @@
+{
+  "HELP": {
+    "FILTER-TASKS": "Filter tasks",
+    "STAT": "Stat",
+    "TASKS-LIST": "Tasks list",
+    "NEXT": "Next",
+    "PREV": "Prev",
+    "EXIT": "Exit",
+    "SETTINGS": "SETTINGS"
+  },
+  "COMMON": {
+    "CANCEL": "Cancel",
+    "NAME-20SYMBOLS": "",
+    "SAVE": "Save",
+    "DELETE": "Delete",
+    "CLOSE": "Close",
+    "NOT-FOUND": "Not found",
+    "OUR-SITE": "Our site",
+    "ABOUT": "About",
+    "BLOG": "Blog",
+    "PROJECT-DESC": "Project desc for education only",
+    "CATEGORY": "Category",
+    "NAME": "Name",
+    "PRIORITY": "Priority",
+    "SORT": "Sort",
+    "CONFIRM": "Confirm action",
+    "SETTINGS": "Settings",
+    "HELP": "Help",
+    "EXIT": "Exit",
+    "ACCOUNT": "Account"
+  },
+  "PRIORITY": {
+    "NAME-20SYMBOLS": "Name (20 symbols)",
+    "ADD": "Add priority",
+    "ALL": "All priorities",
+    "CONFIRM-DELETE": "Delete \"{{name}}\" ? (set \"Without priority\" for tasks)",
+    "ADDING": "Adding priority",
+    "EDITING": "Editing priority"
+  },
+  "TASKS": {
+    "NAME-REQUIRED": "Name (required)",
+    "SELECT-CATEGORY": "Select category",
+    "WITHOUT-CATEGORY": "Without category",
+    "SELECT-PRIORITY": "Select priority",
+    "WITHOUT-PRIORITY": "Without priority",
+    "SELECT-DATE": "Select date",
+    "TODAY": "Today",
+    "TOMORROW": "Tomorrow",
+    "AFTER-TOMORROW": "After tomorrow",
+    "AFTER-WEEK": "After week",
+    "COMPLETE-TASK": "Complete",
+    "ACTIVATE-TASK": "Activate",
+    "DELETE-TASK": "Delete",
+    "ALL": "All tasks",
+    "COMPLETED": "Completed",
+    "NOT-COMPLETED": "Not completed",
+    "FILTER-STATUS": "Status filter",
+    "FILTER-PRIORITY": "Priority filter",
+    "NAME": "Name",
+    "DATE": "Date",
+    "SORT-DIRECTION": "Sort direction",
+    "ADD": "Add task",
+    "FOUNDED": "Founded",
+    "PRIORITY": "Priority",
+    "CATEGORY": "Category",
+    "SHOW-HIDE-SEARCH": "Show/hide search",
+    "HIDE-SEARCH": "Close search",
+    "RESET": "Reset",
+    "CONFIRM-DELETE": "Delete \"{{name}}\" ?",
+    "WITHOUT-DATE": "Without date",
+    "YESTERDAY": "Yesterday",
+    "ADDING": "Adding task",
+    "EDITING": "Editing task",
+    "DATE-FROM": "Date from",
+    "DATE-TO": "Date end",
+    "SEARCH-TIP": "Search on category"
+  },
+  "SETTINGS": {
+    "PRIORITY": "Priorities",
+    "LANG": "Language"
+  },
+  "LANG": {
+    "SELECT": "Select language",
+    "EN": "English",
+    "RU": "Russian"
+  },
+  "CATEGORY": {
+    "CATEGORIES": "Categories",
+    "SEARCH": "Search categories",
+    "ALL": "All tasks",
+    "CONFIRM-DELETE": "Delete \"{{name}}\" ? (set \"Without category\" for tasks)",
+    "ADDING": "New category",
+    "EDITING": "Edit category",
+    "NAME": "Category name"
+  },
+  "STAT": {
+    "SHOW-HIDE": "Show/hide stat",
+    "COMPLETED": "Completed tasks",
+    "NOT-COMPLETED": "Uncompleted tasks",
+    "COMPLETED-PERCENT": "Completed percent",
+    "NOT-COMPLETED-PERCENT": "Uncompleted percent"
+  },
+  "PAGING": {
+    "PAGE-SIZE": "Page size",
+    "PREV": "Prev page",
+    "NEXT": "Next page",
+    "LAST": "Last page",
+    "FIRST": "First page",
+    "OF": "of"
+  },
+  "AUTH": {
+    "ENTER": "Login",
+    "PREV": "Пред. страница",
+    "NEXT": "След. страница",
+    "LAST": "Последняя страница",
+    "FIRST": "Первая страница",
+    "OF": "из"
+  },
+  "PROFILE": {
+    "TITLE": "Профиль"
+  }
+}

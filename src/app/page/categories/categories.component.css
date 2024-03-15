@@ -1,0 +1,144 @@
+.search-form-field {
+  width: 300px;
+}
+
+span.add-icon-area {
+  width: 20%;
+  display: inline-block;
+  text-align: left;
+}
+
+.add-icon {
+  cursor: pointer;
+  vertical-align: middle;
+
+  font-size: 1rem;
+  color: #4d88c6;
+  font-weight: normal;
+  text-align: center;
+}
+
+
+.nav-title {
+  width: 100px;
+  display: inline-block;
+  margin-bottom: 0px;
+  font-size: 20px;
+  text-align: center;
+  vertical-align: middle;
+  color: rgba(14, 10, 7, 0.82) !important;
+}
+
+.search-category-area {
+  padding-left: 20px;
+  padding-right: 20px;
+  /*background-color: #f2f2f2;*/
+  border-radius: 6px
+}
+
+.search-category-button {
+  margin-left: 10px;
+  font-size: 25px
+}
+
+
+.category-title {
+  width: 70%;
+  display: inline-block;
+  font-size: 16px;
+}
+
+
+.uncompleted-count {
+  background-color: #eaeaea;
+  border-radius: 3px;
+  padding: 10px;
+  color: black;
+  width: 15%;
+  display: inline-block;
+  text-align: center;
+}
+
+.title, .category {
+  cursor: pointer;
+}
+
+/*.sidebar-wrapper .mat-form-field {*/
+/*  padding-bottom: 0px;*/
+/*}*/
+
+
+.sidebar a {
+  font-size: 16px !important;
+}
+
+span.add-icon-area {
+  width: 15%;
+  display: inline-block;
+  text-align: left;
+}
+
+
+.nav-title {
+  width: 85%;
+  display: inline-block;
+  font-size: 20px;
+  text-align: center;
+  vertical-align: middle
+}
+
+.search-category-button {
+  margin-left: 10px;
+  font-size: 25px
+}
+
+.all-category-title {
+  width: 85%;
+  display: inline-block;
+  font-size: 16px;
+  text-transform: none;
+}
+
+.edit-category-icon-area {
+  width: 15%;
+  display: inline-block;
+  text-align: left;
+  font-size: 13px
+}
+
+.edit-category-icon {
+  color: #dadada;
+}
+
+
+.sidebar-background {
+  /*background-image: url(src/assets/img/sidebar-1.jpg) !important;*/
+}
+
+.color-circle {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 30px;
+  border: 1px solid #dadada;
+}
+
+
+#categories {
+  width: 100%;
+  overflow: scroll;
+  background-color: #f1f2f2 !important;
+}
+
+.sidebar:before {
+  background-color: #f1f2f2 !important;
+}
+
+
+.mdc-list-item--with-trailing-meta .mdc-list-item__end {
+  margin-left: 0;
+  margin-right: 15px;
+  font-size: 16px;
+  color: #495057
+}

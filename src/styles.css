@@ -1,1 +1,464 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import "assets/css/material-dashboard.css";
+@import "assets/css/sidebar.css";
+
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.main-panel > .content {
+  margin-top: 60px;
+  background-color: transparent !important;
+  padding: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.main-panel {
+  background-color: transparent;
+}
+
+.mat-dialog-container {
+  padding: 25px !important;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.mat-checkbox-layout {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.disabled {
+  color: rgba(93, 93, 93, 0.8) !important;
+  border: none !important;
+  pointer-events: none;
+}
+
+.line {
+  border-bottom: 1px solid #dadada;
+  padding-top: 20px;
+}
+
+
+.hide {
+  display: none;
+}
+
+
+.link {
+  cursor: pointer;
+  border-bottom: 1px solid rgba(203, 203, 203, 0.98);
+}
+
+
+.clear-icon {
+  margin-left: 10px;
+  font-size: 25px;
+}
+
+.pointer {
+  cursor: pointer !important;
+}
+
+
+.inline-delete-icon {
+  float: right;
+  text-align: right;
+  width: 50px;
+  margin-left: 20px;
+}
+
+.inline-delete {
+  margin-left: 10px !important;
+  margin-top: 3px;
+
+}
+
+table.mat-table {
+  overflow: hidden;
+}
+
+
+.green {
+  color: rgba(82, 197, 118, 0.89) !important;
+}
+
+.red {
+  color: rgba(197, 98, 100, 0.89) !important;
+}
+
+.mat-button {
+  margin-top: 10px !important;
+}
+
+app-header {
+  width: 100%;
+}
+
+.navbar {
+  z-index: 0 !important;
+}
+
+
+.mat-raised-button, .mat-button {
+  margin-top: 7px !important;
+}
+
+.ng-sidebar {
+  box-shadow: 0 0 13px rgba(0, 0, 0, 0.4);
+}
+
+
+.gray {
+  color: #dadada !important;
+}
+
+
+.with-subtitle {
+  margin-bottom: 0 !important;
+}
+
+.subtitle {
+  margin-bottom: 20px !important;
+  color: rgba(154, 154, 154, 0.98);
+  font-size: 14px;
+}
+
+.not-found {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  font-size: 20px;
+  color: rgba(74, 74, 74, 0.98);
+  text-align: center;
+
+}
+
+.color-circle {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  display: inline-block;
+  border: 1px solid #dadada;
+}
+
+
+.card {
+  margin-top: 0px !important;
+}
+
+
+.filter-value {
+  text-decoration: underline;
+}
+
+
+.sort {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+.search-button {
+  margin-left: 20px !important;
+}
+
+
+@-webkit-keyframes glowing {
+  0% {
+    -webkit-box-shadow: 0 0 3px rgba(38, 40, 32, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 3px #1e1d16;
+  }
+}
+
+@-moz-keyframes glowing {
+  0% {
+    -moz-box-shadow: 0 0 3px rgba(38, 40, 32, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 3px #1e1d16;
+  }
+}
+
+@-o-keyframes glowing {
+  0% {
+    box-shadow: 0 0 3px rgba(38, 40, 32, 0);
+  }
+  100% {
+    box-shadow: 0 0 3px #1e1d16;
+  }
+}
+
+@keyframes glowing {
+  0% {
+    box-shadow: 0 0 3px rgba(38, 40, 32, 0);
+  }
+  100% {
+    box-shadow: 0 0 3px #1e1d16;
+  }
+}
+
+
+.blink-button {
+  -webkit-animation: glowing 700ms infinite;
+  -moz-animation: glowing 700ms infinite;
+  -o-animation: glowing 700ms infinite;
+  animation: glowing 700ms infinite;
+}
+
+
+.spinner {
+  position: absolute;
+  z-index: 1000;
+  left: 50%;
+  top: 50%;
+  height: 60px;
+  width: 60px;
+  margin: 0px auto;
+  -webkit-animation: rotation .6s infinite linear;
+  -moz-animation: rotation .6s infinite linear;
+  -o-animation: rotation .6s infinite linear;
+  animation: rotation .6s infinite linear;
+  border-left: 6px solid rgba(0, 174, 239, .15);
+  border-right: 6px solid rgba(0, 174, 239, .15);
+  border-bottom: 6px solid rgba(0, 174, 239, .15);
+  border-top: 6px solid rgba(0, 174, 239, .8);
+  border-radius: 100%;
+
+
+}
+
+@-webkit-keyframes rotation {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(359deg);
+  }
+}
+
+@-moz-keyframes rotation {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(359deg);
+  }
+}
+
+@-o-keyframes rotation {
+  from {
+    -o-transform: rotate(0deg);
+  }
+  to {
+    -o-transform: rotate(359deg);
+  }
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+
+.full-width {
+  width: 100% !important;
+}
+
+.gap10 {
+  height: 10px !important;
+}
+
+.gap20 {
+  height: 20px !important;
+}
+
+
+.show-hide-search {
+  margin-top: 20px !important;
+}
+
+
+.founded-center {
+  text-align: center;
+  margin-top: 10px;
+}
+
+
+.ready-date {
+  border-bottom: 1px dashed #3879d6;
+  color: #3879d6;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.transparent {
+  background: none;
+  border: none;
+}
+
+
+.mat-tab-body-content {
+  height: 100%;
+  overflow: hidden;
+  padding: 20px !important;
+  padding-top: 30px !important;
+  padding-bottom: 10px !important;
+  min-height: 300px;
+}
+
+
+.label-select-lang {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-weight: bold;
+}
+
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.radio-button {
+  margin: 5px;
+}
+
+
+.mat-radio-label-content {
+  color: rgba(29, 29, 29, 0.93);
+}
+
+.hideSearch {
+  font-weight: bold;
+}
+
+.mat-datepicker-toggle-default-icon {
+  width: 1.5em !important;
+}
+
+.mat-icon-button {
+  margin-left: 5px !important;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.nopadding-bottom {
+  padding-bottom: 0px !important;
+}
+
+
+.max-width-60 {
+  max-width: 60px !important;
+}
+
+.padding-25 {
+  padding: 25px;
+}
+
+.no-padding-top {
+  padding-top: 0px !important;
+
+}
+
+
+.nomargin {
+  margin: 0 !important;
+}
+
+
+.nopadding-top {
+  padding-top: 0px;
+}
+
+.padding-bottom-20 {
+  padding-bottom: 20px !important;
+}
+
+.mobile-action-bar {
+  box-shadow: 0 4px 20px -2px #110808 !important;
+  padding-bottom: 0px;
+  background-color: #f6f6f6 !important;
+}
+
+
+.mobile-background {
+  background-color: rgb(95, 127, 127) !important;
+}
+
+.action-bar-item {
+  float: right;
+  max-width: 30px;
+  max-height: 30px;
+  height: 40px;
+  vertical-align: center;
+}
+
+.account {
+  font-weight: bold;
+}
+
+
+.fab {
+  position: fixed;
+  display: flex;
+  bottom: 5%;
+  right: 5%;
+}
+
+.ng-sidebar {
+  background-color: #f4f4f4 !important;
+}
+
+.check {
+  margin: 0;
+  padding: 0;
+}
+
+.nopadding {
+  padding: 0 !important;
+}
+
+.note-red {
+  color: rgb(210 52 52);
+  font-size: 0.8rem;
+}
+
+
+.padding-right-15 {
+  padding-right: 15px !important;
+}
+
+.nopadding-right {
+  padding-right: 0px !important;
+}
+
+.padding-15 {
+  padding: 15px !important;
+}
+
+tr.mat-row {
+  height: 55px !important;
+}
+
+.mat-input-element {
+  color: rgba(14, 11, 7, 0.82) !important;
+}

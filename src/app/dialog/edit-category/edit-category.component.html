@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>{{ 'CATEGORY.NAME' | translate }}</mat-label>
+    <input matInput type="text" [(ngModel)]="category.title">
+    @if (category.title) {
+      <button matSuffix mat-icon-button aria-label="Clear" (click)="category.title=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" (click)="save()" cdkFocusInitial
+          [disabled]="category.title.trim().length==0">
+    {{ 'COMMON.SAVE' | translate }}
+  </button>
+  <button mat-raised-button (click)="onNoClick()">
+    {{ 'COMMON.CANCEL' | translate }}
+  </button>
+  @if (canDelete) {
+    <button mat-raised-button color="accent" (click)="delete()" cdkFocusInitial>
+      {{ 'COMMON.DELETE' | translate }}
+    </button>
+  }
+</mat-dialog-actions>
