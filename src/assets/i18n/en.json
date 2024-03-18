@@ -95,10 +95,13 @@
   },
   "STAT": {
     "SHOW-HIDE": "Show/hide stat",
+    "SHOW": "Show stat",
+    "HIDE": "Hide stat",
     "COMPLETED": "Completed tasks",
     "NOT-COMPLETED": "Uncompleted tasks",
     "COMPLETED-PERCENT": "Completed percent",
-    "NOT-COMPLETED-PERCENT": "Uncompleted percent"
+    "NOT-COMPLETED-PERCENT": "Uncompleted percent",
+    "OF": "of"
   },
   "PAGING": {
     "PAGE-SIZE": "Page size",

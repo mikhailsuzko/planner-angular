@@ -3,7 +3,7 @@
   <!--Hide sidebar -->
   <div class="row">
     <div class="col-2">
-      <button mat-icon-button (click)="clickEvent()">
+      <button mat-icon-button (click)="toggleMenu()">
         <mat-icon>keyboard_arrow_left</mat-icon>
       </button>
     </div>
@@ -58,12 +58,15 @@
                  (click)="showCategory(emptyCategory)"
                  [class.active]="selectedCategory === emptyCategory">
     <a matListItemTitle>{{ 'CATEGORY.ALL' | translate }}</a>
+    <a matListItemMeta class="uncompleted-count" aria-disabled="true">
+      {{ stat().uncompletedTotal }}
+    </a>
   </mat-list-item>
   <mat-divider/>
   @for (category of categories(); track category) {
     <mat-list-item class="list-group-item-action"
                    (click)="showCategory(category)"
-                   [class.active]="category.id === selectedCategory?.id">
+                   [class.active]="category.id === selectedCategory.id">
       <a matListItemTitle>{{ category.title }}</a>
       <button mat-icon-button matListItemMeta class="edit-category-icon" (click)="edit(category)">
         <mat-icon>edit</mat-icon>

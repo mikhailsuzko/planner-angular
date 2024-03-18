@@ -5,6 +5,8 @@ body {
 #sidebar-wrapper {
   min-height: 100vh;
   /*margin-left: -15rem;*/
+  /*margin-right: 5px;*/
+  box-shadow: 0 10px 10px -5px rgba(0, 0, 0, 0.15), 0 5px 18px 0 rgba(0, 0, 0, 0.12);
   -webkit-transition: margin .25s ease-out;
   -moz-transition: margin .25s ease-out;
   -o-transition: margin .25s ease-out;

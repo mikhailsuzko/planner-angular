@@ -1,18 +1,19 @@
-import {Component, effect, EventEmitter, Input, input, Output} from '@angular/core';
-import {Category} from "../../dto/Category";
+import {Component, effect, EventEmitter, input, Output} from '@angular/core';
+import {Category} from "../../../../dto/Category";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {MatIconModule} from "@angular/material/icon";
 import {MatDialog} from "@angular/material/dialog";
-import {EditCategoryComponent} from "../../dialog/edit-category/edit-category.component";
-import {DialogAction, DialogResult} from "../../model/DialogResult";
+import {EditCategoryComponent} from "../../../../dialog/edit-category/edit-category.component";
+import {DialogAction, DialogResult} from "../../../../model/DialogResult";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
-import {CategorySearchValues} from "../../dao/search/SearchObjects";
+import {CategorySearchValues} from "../../../../dao/search/SearchObjects";
 import {MatButtonModule} from "@angular/material/button";
 import {MatListModule} from "@angular/material/list";
+import {Stat} from "../../../../dto/Stat";
 
 @Component({
   selector: 'app-categories',
@@ -30,12 +31,15 @@ import {MatListModule} from "@angular/material/list";
 })
 export class CategoriesComponent {
   isMobile: boolean;
-  @Input() status!: boolean;
+  showSidebar = input.required<boolean>();
+  @Output() toggleSidebarEvent = new EventEmitter<boolean>();
+
+  stat = input.required<Stat>();
+
   categories = input.required<Category[]>();
   @Output() addCategoryEvent = new EventEmitter<Category>();
   @Output() updateCategoryEvent = new EventEmitter<Category>();
   @Output() deleteCategoryEvent = new EventEmitter<Category>();
-  @Output() statusEvent = new EventEmitter<void>();
   @Output() selectedCategoryEvent = new EventEmitter<Category>();
 
   searchTitle = "";
@@ -87,8 +91,8 @@ export class CategoriesComponent {
     })
   }
 
-  clickEvent() {
-    this.statusEvent.emit()
+  toggleMenu() {
+    this.toggleSidebarEvent.emit()
   }
 
   clearAndSearch(): void {

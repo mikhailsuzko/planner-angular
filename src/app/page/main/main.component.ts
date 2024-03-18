@@ -12,13 +12,17 @@ import {StatService} from "../../dao/impl/StatService";
 import {Category} from "../../dto/Category";
 import {Task} from "../../dto/Task";
 import {DeviceDetectorService} from "ngx-device-detector";
-import {CategoriesComponent} from "../categories/categories.component";
+import {CategoriesComponent} from "./sidebar/categories/categories.component";
 import {TranslateService} from "@ngx-translate/core";
 import {MatIconModule} from "@angular/material/icon";
 import {CategorySearchValues} from "../../dao/search/SearchObjects";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
+import {HeaderComponent} from "./content/header/header.component";
+import {DashboardData} from "../../model/DashboardData";
+import {Stat} from "../../dto/Stat";
+import {StatComponent} from "./content/stat/stat.component";
 
 export const LANG_RU = 'ru';
 export const LANG_EN = 'en';
@@ -29,7 +33,7 @@ export const LANG_EN = 'en';
   standalone: true,
   imports: [
     NgIf, NgClass, CategoriesComponent,
-    MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule
+    MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, HeaderComponent, StatComponent
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css',
@@ -46,6 +50,12 @@ export class MainComponent implements OnInit {
   isTablet: boolean = false;
   isLoading: boolean = false;
 
+  dash: DashboardData = new DashboardData(0, 0);
+  stat = new Stat(0, 2);
+  showStat = true;
+  showSearch = false;
+  selectedCategory!: Category;
+
   constructor(private http: HttpClient,
               private router: Router,
               private taskService: TaskService,
@@ -59,10 +69,10 @@ export class MainComponent implements OnInit {
     translateService.use(LANG_RU)
   }
 
-  status: boolean = false;
+  showSidebar: boolean = true;
 
-  toggleMenu() {
-    this.status = !this.status;
+  toggleMenu(showSidebar: boolean) {
+    this.showSidebar = showSidebar;
   }
 
   ngOnInit(): void {
@@ -192,5 +202,20 @@ export class MainComponent implements OnInit {
 
   categorySelected(category: Category) {
     console.log(category);
+    this.selectedCategory = category;
+
+
+    if (category && category.id) {
+      this.dash.completedTotal = category.completedCount;
+      this.dash.uncompletedTotal = category.uncompletedCount;
+    } else {
+      this.dash.completedTotal = this.stat.completedTotal;
+      this.dash.uncompletedTotal = this.stat.uncompletedTotal;
+    }
+
+  }
+
+  toggleStat(showStat: boolean): void {
+    this.showStat = showStat;
   }
 }

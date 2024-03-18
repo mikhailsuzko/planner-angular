@@ -1,14 +1,12 @@
 // общая статистика по всем задачам (неважно какой категории)
 export class Stat {
-  id: number;
-  title: string;
+  id?: number;
   completedTotal: number;
   uncompletedTotal: number;
 
-  constructor(id: number, title: string, completedTotal: number, uncompletedTotal: number) {
+  constructor(completedTotal?: number, uncompletedTotal?: number, id?: number) {
     this.id = id;
-    this.title = title;
-    this.completedTotal = completedTotal;
-    this.uncompletedTotal = uncompletedTotal;
+    this.completedTotal = completedTotal === undefined ? 0 : completedTotal;
+    this.uncompletedTotal = uncompletedTotal === undefined ? 0 : uncompletedTotal;
   }
 }

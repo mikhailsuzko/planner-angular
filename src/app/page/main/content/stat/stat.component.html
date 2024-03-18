@@ -1,0 +1,45 @@
+<div [@statRegion]="animationState">
+  <div>
+    <div class="row padding-25 nopadding-bottom">
+      <app-stat-card
+        class='col-lg-3 col-md-6 col-sm-12 completed-card'
+        title="{{'STAT.COMPLETED' | translate}}"
+        iconName="done"
+        [count1]="getCompletedCount()"
+        [count2]="getTotal()"
+      >
+      </app-stat-card>
+
+      <app-stat-card
+        class='col-lg-3 col-md-6 col-sm-12'
+        title="{{'STAT.NOT-COMPLETED' | translate}}"
+        iconName="thumb_down_alt"
+        [count1]="getUncompletedCount()"
+        [count2]="getTotal()"
+      >
+      </app-stat-card>
+
+
+      <app-stat-card
+        class='col-lg-3 col-md-6 col-sm-12 completed-card'
+        title="{{'STAT.COMPLETED-PERCENT' | translate}}"
+        iconName="done_all"
+        [count1]="getCompletedPercent() | percent"
+        [count2]="null"
+      >
+      </app-stat-card>
+
+
+      <app-stat-card
+        class='col-lg-3 col-md-6 col-sm-12'
+        title="{{'STAT.NOT-COMPLETED-PERCENT' | translate}}"
+        iconName="thumb_down_alt"
+        [count1]="getUncompletedPercent() | percent"
+        [count2]="null"
+      >
+      </app-stat-card>
+
+
+    </div>
+  </div>
+</div>
