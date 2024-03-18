@@ -36,10 +36,14 @@ export class CategoriesComponent {
   @Output() updateCategoryEvent = new EventEmitter<Category>();
   @Output() deleteCategoryEvent = new EventEmitter<Category>();
   @Output() statusEvent = new EventEmitter<void>();
+  @Output() selectedCategoryEvent = new EventEmitter<Category>();
 
   searchTitle = "";
   categorySearchValues: CategorySearchValues = new CategorySearchValues("");
   @Output() searchCategoryEvent = new EventEmitter<CategorySearchValues>(); // передаем строку для поиска
+
+  emptyCategory = new Category('');
+  selectedCategory = this.emptyCategory
 
   constructor(detectorService: DeviceDetectorService,
               public dialog: MatDialog,
@@ -97,4 +101,10 @@ export class CategoriesComponent {
     this.searchCategoryEvent.emit(this.categorySearchValues);
   }
 
+  showCategory(category: Category) {
+    if (this.selectedCategory !== category) {
+      this.selectedCategory = category;
+      this.selectedCategoryEvent.emit(this.selectedCategory);
+    }
+  }
 }

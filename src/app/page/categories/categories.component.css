@@ -142,3 +142,7 @@ span.add-icon-area {
   font-size: 16px;
   color: #495057
 }
+
+.active {
+  background: lightblue !important;
+}

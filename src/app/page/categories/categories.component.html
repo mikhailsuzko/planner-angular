@@ -1,5 +1,6 @@
 <div class="container">
 
+  <!--Hide sidebar -->
   <div class="row">
     <div class="col-2">
       <button mat-icon-button (click)="clickEvent()">
@@ -19,14 +20,15 @@
     } @else {
       <div class="col-12 text-center">
         <button class="add-icon" (click)="addCategory()">
-            + Добавить
-          </button>
-        </div>
+          + Добавить
+        </button>
+      </div>
     }
   </div>
 </div>
 <hr>
 
+<!--Search category-->
 <div class="search-category-area">
   <mat-form-field class="search-form-field">
     <mat-label>{{ 'CATEGORY.SEARCH' | translate }}</mat-label>
@@ -45,29 +47,32 @@
       </button>
     }
   </mat-form-field>
-  </div>
+</div>
 
-<!-- Categories -->
-<mat-list-item class="list-group-item-action">
-  <a matListItemTitle>{{ 'CATEGORY.ALL' | translate }}</a>
-</mat-list-item>
-<mat-divider/>
+<!-- List of categories -->
 @if (!categories() || categories().length === 0) {
   <p class="not-found">{{ 'COMMON.NOT-FOUND' |translate }}</p>
 }
-
-<mat-list>
+<mat-selection-list [multiple]="false" hideSingleSelectionIndicator>
+  <mat-list-item class="list-group-item-action"
+                 (click)="showCategory(emptyCategory)"
+                 [class.active]="selectedCategory === emptyCategory">
+    <a matListItemTitle>{{ 'CATEGORY.ALL' | translate }}</a>
+  </mat-list-item>
+  <mat-divider/>
   @for (category of categories(); track category) {
-    <mat-list-item class="list-group-item-action">
+    <mat-list-item class="list-group-item-action"
+                   (click)="showCategory(category)"
+                   [class.active]="category.id === selectedCategory?.id">
       <a matListItemTitle>{{ category.title }}</a>
       <button mat-icon-button matListItemMeta class="edit-category-icon" (click)="edit(category)">
         <mat-icon>edit</mat-icon>
       </button>
       <a matListItemMeta class="uncompleted-count" aria-disabled="true">
         {{ category.uncompletedCount }}
-        </a>
+      </a>
     </mat-list-item>
   }
-</mat-list>
+</mat-selection-list>
 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

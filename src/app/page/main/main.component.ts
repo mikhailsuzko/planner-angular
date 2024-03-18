@@ -18,6 +18,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {CategorySearchValues} from "../../dao/search/SearchObjects";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
+import {MatButtonModule} from "@angular/material/button";
 
 export const LANG_RU = 'ru';
 export const LANG_EN = 'en';
@@ -28,7 +29,7 @@ export const LANG_EN = 'en';
   standalone: true,
   imports: [
     NgIf, NgClass, CategoriesComponent,
-    MatFormFieldModule, MatInputModule, MatIconModule
+    MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css',
@@ -60,7 +61,7 @@ export class MainComponent implements OnInit {
 
   status: boolean = false;
 
-  clickEvent() {
+  toggleMenu() {
     this.status = !this.status;
   }
 
@@ -187,5 +188,9 @@ export class MainComponent implements OnInit {
         this.categories = result;
       });
     }
+  }
+
+  categorySelected(category: Category) {
+    console.log(category);
   }
 }
