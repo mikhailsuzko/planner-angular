@@ -1,4 +1,4 @@
-import {PrioritySearchValues} from '../search/SearchObjects';
+import {PrioritySearchValues} from '../../model/search/SearchObjects';
 import {Observable} from 'rxjs';
 import {Priority} from "../../dto/Priority";
 import {CommonDao} from "./CommonDao";

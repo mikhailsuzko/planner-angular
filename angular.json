@@ -26,8 +26,8 @@
             ],
             "styles": [
               "src/styles.css",
+              "src/theme.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/assets/css/material-dashboard.css",
               "src/assets/css/sidebar.css"
             ],

@@ -3,7 +3,7 @@ import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
 import {CommonService} from './CommonService';
-import {TaskSearchValues} from '../search/SearchObjects';
+import {TaskSearchValues} from '../../model/search/SearchObjects';
 import {Task} from '../../dto/Task';
 import {TaskDao} from "../interface/TaskDao";
 import {TASK_URL} from "../../model/consts";
@@ -18,10 +18,10 @@ export class TaskService extends CommonService<Task> implements TaskDao {
     super(baseUrl, http);
   }
 
-  findTasks(searchValues: TaskSearchValues): Observable<Task[]> {
+  findTasks(searchValues: TaskSearchValues): Observable<any> {
     let httpMethodElement = HttpMethod[HttpMethod.POST];
     const backendUrl = this.baseUrl + '/search';
     const operation = new Operation(httpMethodElement, backendUrl, searchValues);
-    return this.http.post<Task[]>(environment.bffUrl + '/operation', operation);
+    return this.http.post<any>(environment.bffUrl + '/operation', operation);
   }
 }

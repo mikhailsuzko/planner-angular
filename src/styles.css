@@ -448,7 +448,7 @@ app-header {
 }
 
 .nopadding-right {
-  padding-right: 0px !important;
+  padding-right: 0 !important;
 }
 
 .padding-15 {
@@ -462,3 +462,13 @@ tr.mat-row {
 .mat-input-element {
   color: rgba(14, 11, 7, 0.82) !important;
 }
+
+.mat-mdc-form-field-icon-suffix {
+  padding: 0 8px 0 4px !important;
+}
+
+.mat-mdc-raised-button {
+  height: 35px !important;
+}
+
+

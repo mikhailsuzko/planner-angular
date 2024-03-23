@@ -10,7 +10,7 @@ import {DialogAction, DialogResult} from "../../../../model/DialogResult";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
-import {CategorySearchValues} from "../../../../dao/search/SearchObjects";
+import {CategorySearchValues} from "../../../../model/search/SearchObjects";
 import {MatButtonModule} from "@angular/material/button";
 import {MatListModule} from "@angular/material/list";
 import {Stat} from "../../../../dto/Stat";

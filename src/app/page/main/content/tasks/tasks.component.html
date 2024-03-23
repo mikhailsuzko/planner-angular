@@ -1,0 +1,282 @@
+<div [@searchRegion]="animationState" class="search-region">
+  <div class="gap20"></div>
+  <div class="row " style="font-size: 8px">
+    <div class="col-md-2 col-sm-12">
+      <mat-form-field class="full-width" appearance="outline">
+        <label class="nopadding nomargin">
+          <input matInput placeholder="{{'COMMON.NAME' | translate}}"
+                 [(ngModel)]='filterTitle'
+                 (keydown.escape)="$event.stopPropagation(); filterTitle='';"
+                 (keyup.enter)="initSearch()">
+        </label>
+
+        @if (filterTitle && filterTitle.trim().length > 0) {
+          <button class="clear-icon" matSuffix mat-icon-button
+                  (click)="$event.stopPropagation();  filterTitle=''">
+            <mat-icon>clear</mat-icon>
+          </button>
+        }
+      </mat-form-field>
+    </div>
+
+    <!--Status-->
+    <div class="col-md-2 col-sm-12">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-select [(ngModel)]="filterCompleted" (selectionChange)="initSearch()"
+                    placeholder="{{'TASKS.FILTER-STATUS' | translate}}">
+          <mat-option [value]="null">{{ 'TASKS.ALL' | translate }}</mat-option>
+          <mat-option [value]="true">{{ 'TASKS.COMPLETED' | translate }}</mat-option>
+          <mat-option [value]="false">{{ 'TASKS.NOT-COMPLETED' | translate }}</mat-option>
+        </mat-select>
+        @if (filterCompleted != null) {
+          <button class="clear-icon" matSuffix mat-icon-button
+                  (click)="$event.stopPropagation(); filterCompleted = null;">
+            <mat-icon>clear</mat-icon>
+          </button>
+        }
+      </mat-form-field>
+    </div>
+
+    <!--Priority-->
+    <div class="col-md-2 col-sm-12">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-select [(ngModel)]="filterPriorityId" (selectionChange)="initSearch()"
+                    placeholder="{{'TASKS.FILTER-PRIORITY' | translate}}">
+          <mat-option [value]="null">{{ 'PRIORITY.ALL' | translate }}</mat-option>
+          <mat-option *ngFor="let priority of priorities()"
+                      [value]="priority.id">{{ priority.title }}
+          </mat-option>
+        </mat-select>
+        @if (filterPriorityId != null) {
+          <button class="clear-icon" matSuffix mat-icon-button value="{{ 'TASKS.RESET' | translate }}"
+                  (click)="$event.stopPropagation(); filterPriorityId = null; initSearch() ">
+            <mat-icon>clear</mat-icon>
+          </button>
+        }
+      </mat-form-field>
+    </div>
+
+    <!--Date-->
+    <div class="col-md-3 col-sm-12">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-date-range-input [formGroup]="dateRangeForm" [rangePicker]="dateRangePicker">
+          <input matStartDate formControlName="dateFrom" placeholder="{{'TASKS.DATE-FROM' | translate}}"
+                 (change)="initSearch()" readonly="readonly">
+          <input matEndDate formControlName="dateTo" placeholder="{{'TASKS.DATE-TO' | translate}}"
+                 (change)="initSearch()" readonly="readonly">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="dateRangePicker" (select)="initSearch()"/>
+        <mat-date-range-picker #dateRangePicker (change)="initSearch()"/>
+        @if (dateFrom.value || dateTo.value) {
+          <button class="clear-icon" matSuffix mat-icon-button
+                  (click)="$event.stopPropagation(); clearDateRange(); initSearch()">
+            <mat-icon>clear</mat-icon>
+          </button>
+        }
+      </mat-form-field>
+    </div>
+
+    <!--Sort-->
+    <div class="col-md-2 col-sm-12">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-select [(ngModel)]="filterSortColumn"
+                    placeholder="{{'COMMON.SORT' | translate}}"
+                    (selectionChange)="initSearch()">
+          <mat-option value='title'>{{ 'TASKS.NAME' | translate }}</mat-option>
+          <mat-option value='taskDate'>{{ 'TASKS.DATE' | translate }}</mat-option>
+          <mat-option value='priority'>{{ 'COMMON.PRIORITY' | translate }}</mat-option>
+          <mat-option value='category'>{{ 'COMMON.CATEGORY' | translate }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!--Sort direction-->
+    <div class="col-md-1 text-left">
+      <div class="row buttons">
+        <div class="col-md-auto text-left"
+             [ngClass]="{'sort': !isMobile, 'col-1': !isMobile, 'col-md-1': isMobile, 'col-sm-12': isMobile}">
+          @if (isMobile) {
+            <span translate (click)="$event.stopPropagation(); changedSortDirection();">
+          TASKS.SORT-DIRECTION
+        </span>
+          }
+          <button mat-icon-button value="{{ 'TASKS.SORT-DIRECTION' | translate}}"
+                  (click)="$event.stopPropagation(); changedSortDirection(); ">
+            <mat-icon>{{ sortIconName }}</mat-icon>
+          </button>
+
+        </div>
+
+        <div class="col-md-auto"
+             [ngClass]="{'sort': !isMobile, 'col-1': !isMobile, 'text-right': !isMobile,'col-md-1': isMobile, 'text-left': isMobile, 'col-sm-12': isMobile}">
+          <button mat-icon-button (click)="initSearch()">
+            <mat-icon>search</mat-icon>
+          </button>
+          @if (isMobile) {
+            <button matSuffix mat-button
+                    (click)="$event.stopPropagation(); clearSearchValues();">
+              {{ 'TASKS.RESET' | translate }}
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-5 text-left align-self-center">
+      @if (!isMobile) {
+        <p class="note-red">* {{ 'TASKS.SEARCH-TIP' | translate }}</p>
+      }
+    </div>
+
+    <div class="col-md-2 text-center align-self-center">
+      <div class="row align-content-center">
+      @if (!isMobile) {
+        <span class="pointer col-md-auto" (click)="onToggleSearch()">  {{ 'TASKS.HIDE-SEARCH' | translate }}</span>
+      }
+      <button mat-icon-button class="col-md-auto" (click)="onToggleSearch()">
+        <mat-icon class="height-25">keyboard_arrow_up</mat-icon>
+      </button>
+      </div>
+    </div>
+
+    <div class="col-md-5 text-right nopadding-right align-self-center">
+      @if (!isMobile) {
+        <span class="pointer"
+              (click)="$event.stopPropagation(); clearSearchValues(); initSearch()">  {{ 'TASKS.RESET' | translate }}</span>
+      }
+      @if (!isMobile) {
+        <button mat-icon-button
+                (click)="$event.stopPropagation(); clearSearchValues(); initSearch()">
+          <mat-icon class="height-25">close</mat-icon>
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="gap10"></div>
+
+</div>
+
+
+<div class="row nomargin"
+     [ngClass]="{'padding-15': !isMobile, 'mobile-background padding-25 nopadding-bottom': isMobile}">
+  <div class="col-sm-12" [ngClass]="{'col-md-2': !isMobile}" *ngIf="!isMobile">
+    <button class="full-width"
+            mat-raised-button color="primary" (click)="addNewTask()">{{ 'TASKS.ADD' | translate }}
+    </button>
+  </div>
+
+  <div class="col-md-4 col-sm-12 text-left align-middle align-self-center " *ngIf="!isMobile">
+    <span class="link " translate (click)="onToggleSearch()">TASKS.SHOW-HIDE-SEARCH </span>
+  </div>
+
+  <div class="col-md-6 col-sm-6 nopadding-left" [ngClass]="{'text-left': isMobile, 'text-right': !isMobile}">
+    <span class="founded-text" [ngClass]="{'mobile-founded-text': isMobile}">
+    {{ 'TASKS.FOUNDED' | translate }}: {{ totalTasksFound() }}</span>
+  </div>
+</div>
+
+<div class="row nopadding nomargin">
+  <div class="col-12 nopadding nomargin">
+    <div class="desktop-task-list nopadding-top" *ngIf="!isMobile">
+      <!--No tasks-->
+      <div class="card" *ngIf="tasks() && tasks().length === 0">
+        <p class="not-found" translate>COMMON.NOT-FOUND</p>
+      </div>
+
+      <div class="card" *ngIf="!isMobile && tasks() && tasks().length > 0">
+        <div class="card-body">
+          <div class="table-responsive" *ngIf="tasks() && (tasks().length > 0)">
+            <div class="card" *ngIf="tasks() && tasks().length === 0">
+              <p class="not-found" translate>COMMON.NOT-FOUND</p>
+            </div>
+            <table aria-describedby="tasks" mat-table [dataSource]="dataSource" matSort>
+              <ng-container matColumnDef="color">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td class="col-color" mat-cell *matCellDef="let task"
+                    [style.background-color]="getPriorityColor(task)"
+                ></td>
+              </ng-container>
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td class="col-id" mat-cell *matCellDef="let index = index;">
+                  {{ index + 1 + taskSearchValues().pageNumber * taskSearchValues().pageSize }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef> {{ 'TASKS.NAME' | translate }}</th>
+                <td class="col-title title pointer" mat-cell *matCellDef="let task"
+                    [class.completed]="task.completed" (click)="editTask(task)">
+                  {{ task.title }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef> {{ 'TASKS.DATE' | translate }}</th>
+                <td class="col-date" mat-cell *matCellDef="let task"
+                    [ngClass]="{'completed': task.completed, 'nodate': task.taskDate == null}">
+                  {{ task.taskDate | taskDate }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="priority">
+                <th mat-header-cell *matHeaderCellDef> {{ 'TASKS.PRIORITY' | translate }}</th>
+                <td class="col-priority" mat-cell *matCellDef="let task"
+                    [ngClass]="{'completed': task.completed, 'nopriority': task.priority == null}"
+                >
+                  {{ task.priority ? task.priority.title : translateWithoutPriority }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="category">
+                <th mat-header-cell *matHeaderCellDef> {{ 'TASKS.CATEGORY' | translate }}</th>
+                <td class="col-category"
+                    mat-cell *matCellDef="let task"
+                    [ngClass]="{'completed': task.completed, 'nocategory': task.category == null}"
+                >
+                  {{ task.category ? task.category.title : translateWithoutCategory }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="operations">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td class="col-operations text-right nopadding-right" mat-cell *matCellDef="let task">
+                  <button mat-icon-button (click)="openDeleteDialog(task)"
+                          class="delete-icon  nomargin">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  <button mat-icon-button class="edit-icon  nomargin" (click)="editTask(task)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="completed">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td class="col-id" mat-cell *matCellDef="let task"
+                    [class.completed]="task.completed">
+                  <mat-checkbox class="table-icon  "
+                                (click)="$event.stopPropagation()"
+                                (change)="$event ? onToggleCompleted(task) : null"
+                                [checked]="task.completed">
+                  </mat-checkbox>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns; "></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator showFirstLastButtons
+                           (page)="pageChanged($event)"
+                           [pageIndex]="taskSearchValues().pageNumber"
+                           [pageSize]="taskSearchValues().pageSize"
+                           [length]="totalTasksFound()"
+                           [pageSizeOptions]="[5, 10, 20, 50, 100]"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

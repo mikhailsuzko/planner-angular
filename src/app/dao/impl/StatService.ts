@@ -15,7 +15,7 @@ export class StatService implements StatDao {
   }
 
   getOverallStat(): Observable<Stat> {
-    let httpMethodElement = HttpMethod[HttpMethod.POST];
+    let httpMethodElement = HttpMethod[HttpMethod.GET];
     const operation = new Operation(httpMethodElement, this.baseUrl, null);
     return this.http.post<Stat>(environment.bffUrl + '/operation', operation);
   }

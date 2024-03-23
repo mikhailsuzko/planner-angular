@@ -1,4 +1,4 @@
-import {Component, input, Input} from '@angular/core';
+import {Component, effect, input} from '@angular/core';
 import {DashboardData} from "../../../../model/DashboardData";
 import {TranslateModule} from "@ngx-translate/core";
 import {PercentPipe} from "@angular/common";
@@ -32,15 +32,16 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
   ]
 })
 export class StatComponent {
-  showStatistics!: boolean;
   animationState!: string;
   dash = input.required<DashboardData>();
+  showStatistics = input.required<boolean>();
 
-  @Input('showStat')
-  set setShowStat(show: boolean) {
-    this.showStatistics = show;
-    this.initStatDash();
+  constructor() {
+    effect(() => {
+      this.initStatDash();
+    })
   }
+
 
   getTotal(): number {
     return this.dash() ? this.dash().completedTotal + this.dash().uncompletedTotal : 0;
@@ -63,7 +64,7 @@ export class StatComponent {
   }
 
   initStatDash(): void {
-    if (this.showStatistics) {
+    if (this.showStatistics()) {
       this.animationState = 'show';
     } else {
       this.animationState = 'hide';

@@ -1,0 +1,103 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<!--<mat-dialog-content>-->
+<mat-form-field class="padding-left-right-15">
+  <mat-label>{{ 'TASKS.NAME-REQUIRED' | translate }}</mat-label>
+  <input [disabled]="task.completed" #inputTitle matInput
+         [(ngModel)]="newTitle"
+         (keyup.enter)="confirm()">
+  <button
+    *ngIf="newTitle && newTitle.trim().length > 0"
+    [disabled]="task.completed"
+    matSuffix mat-icon-button
+    (click)="newTitle= ''" class="dialog-toto-title">
+    <mat-icon>clear</mat-icon>
+  </button>
+</mat-form-field>
+<mat-form-field class="padding-left-right-15">
+  <mat-label>{{ 'TASKS.SELECT-CATEGORY' | translate }}</mat-label>
+  <mat-select [(value)]="newCategoryId" [disabled]="task.completed">
+    <mat-option [value]="null">{{ 'TASKS.WITHOUT-CATEGORY' | translate }}</mat-option>
+    <mat-option *ngFor="let cat of categories" [value]="cat.id">
+      {{ cat.title }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field class="padding-left-right-15">
+  <mat-label>{{ 'TASKS.SELECT-PRIORITY' | translate }}</mat-label>
+  <mat-select [(value)]="newPriorityId" [disabled]="task.completed">
+    <mat-option [value]="null">{{ 'TASKS.WITHOUT-PRIORITY' | translate }}</mat-option>
+    <mat-option *ngFor="let p of priorities" [value]="p.id">
+      {{ p.title }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field class="padding-left-right-15">
+  <input [disabled]="task.completed"
+         matInput placeholder="{{'TASKS.SELECT-DATE' | translate}}" #inputDate readonly="true"
+         [(ngModel)]="newDate"
+         [matDatepicker]="picker"
+         (click)="picker.open()">
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker class="padding-left-right-15"></mat-datepicker>
+  <button [disabled]="task.completed"
+          *ngIf="inputDate.value.trim().length > 0"
+          matSuffix mat-icon-button
+          (click)="newDate = null" class="calendar-clear-icon">
+    <mat-icon>clear</mat-icon>
+  </button>
+</mat-form-field>
+
+<div class="row padding-left-right-15">
+  <div class="col-12">
+      <span class="ready-date" [ngClass]="{'disabled': task.completed}"
+            (click)="!task.completed && setToday()">
+      {{ 'TASKS.TODAY' | translate }}
+    </span>
+    <span class="ready-date" [ngClass]="{'disabled': task.completed}"
+          (click)="!task.completed && addDays(1)">
+      {{ 'TASKS.TOMORROW' | translate }}
+    </span>
+    <span class="ready-date" [ngClass]="{'disabled': task.completed}"
+          (click)="!task.completed && addDays(2)">
+      {{ 'TASKS.AFTER-TOMORROW' | translate }}
+    </span>
+    <span class="ready-date" [ngClass]="{'disabled': task.completed}"
+          (click)="!task.completed && addDays(7)">
+      {{ 'TASKS.AFTER-WEEK' | translate }}
+
+    </span>
+  </div>
+</div>
+<div class="gap20"></div>
+<!--</mat-dialog-content>-->
+
+<mat-dialog-actions class="padding-bottom-20">
+  <div class="col-md-6 col-12 nopadding nomargin" [ngClass]="{'text-center': isMobile, 'text-left': !isMobile}">
+    <button class="nomargin"
+            mat-raised-button color="primary"
+            (click)="confirm()"
+            [disabled]="inputTitle.value.trim().length==0 || (task.completed)">
+      {{ 'COMMON.SAVE' | translate }}
+    </button>
+    <button mat-raised-button (click)="cancel()"> {{ 'COMMON.CANCEL' | translate }}</button>
+  </div>
+
+  <div class="col-md-6 col-12 text-right nopadding nomargin"
+       *ngIf="!task.completed || canDelete"
+       [ngClass]="{'text-center': isMobile, 'text-right': !isMobile}">
+
+    <button mat-button class="green nomargin nopadding"
+            *ngIf="!task.completed && task.id" (click)="complete()">
+      {{ 'TASKS.COMPLETE-TASK' | translate }}
+    </button>
+
+    <button mat-button class="green nomargin nopadding" (click)="activate()"
+            *ngIf="task.completed">
+      {{ 'TASKS.ACTIVATE-TASK' | translate }}
+    </button>
+
+    <button mat-button *ngIf="canDelete" class="red" (click)="delete()">
+      {{ 'TASKS.DELETE-TASK' | translate }}
+    </button>
+  </div>
+</mat-dialog-actions>

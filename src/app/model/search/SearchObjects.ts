@@ -13,19 +13,18 @@ export class PrioritySearchValues {
 
 export class TaskSearchValues {
 
-  title = '';
-  // completed: number = null;
-  // priorityId: number = null;
-  // categoryId: number = null;
-  //
-  // dateFrom: Date = null;
-  // dateTo: Date = null;
-  //
-  // email: string = null;
+  title?: string | null;
+  completed?: boolean | null;
+  priorityId?: number | null;
+  categoryId?: number | null;
+
+  dateFrom?: Date;
+  dateTo?: Date;
+
   pageNumber = 0;
   pageSize = 5;
 
-  sortColumn = 'title';
+  sortColumn = 'completed';
   sortDirection = 'asc';
 
 }

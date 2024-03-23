@@ -2,7 +2,7 @@ import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CommonService} from './CommonService';
 import {CategoryDao} from '../interface/CategoryDao';
-import {CategorySearchValues} from '../search/SearchObjects';
+import {CategorySearchValues} from '../../model/search/SearchObjects';
 import {Observable} from 'rxjs';
 import {Category} from "../../dto/Category";
 import {CATEGORY_URL} from "../../model/consts";
