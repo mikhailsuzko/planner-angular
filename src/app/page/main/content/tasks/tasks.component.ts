@@ -1,7 +1,7 @@
 import {Component, CUSTOM_ELEMENTS_SCHEMA, effect, EventEmitter, input, OnInit, Output} from '@angular/core';
 import {Task} from '../../../../dto/Task';
 import {Category} from "../../../../dto/Category";
-import {TaskSearchValues} from "../../../../model/search/SearchObjects";
+import {TaskSearchValues} from "../../../../model/SearchObjects";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MatDialog} from "@angular/material/dialog";
 import {DeviceDetectorService} from "ngx-device-detector";
@@ -16,7 +16,7 @@ import {ConfirmComponent} from "../../../dialog/confirm/confirm.component";
 import {DialogAction} from "../../../../model/DialogResult";
 import {EditTaskComponent} from "../../../dialog/edit-task/edit-task.component";
 import {Priority} from "../../../../dto/Priority";
-import {TaskDatePipe} from "../../../../pipe/task-date.pipe";
+import {TaskDatePipe} from "../../../../service/pipe/task-date.pipe";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -24,8 +24,8 @@ import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {MatDatepickerModule, MatDateRangeInput} from "@angular/material/datepicker";
 import {animate, state, style, transition, trigger} from "@angular/animations";
-import {PriorityService} from "../../../../dao/impl/PriorityService";
-import {CommonUtils} from "../../../../utils/CommonUtils";
+import {PriorityService} from "../../../../service/dao/impl/PriorityService";
+import {CommonUtils} from "../../../../service/utils/CommonUtils";
 
 @Component({
   selector: 'app-tasks',

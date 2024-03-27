@@ -4,7 +4,7 @@ import {provideRouter} from '@angular/router';
 import {routes} from './app.routes';
 import {provideClientHydration} from '@angular/platform-browser';
 import {HttpClient, provideHttpClient, withInterceptors} from "@angular/common/http";
-import {cookiesInterceptor} from "./cookies.interceptor";
+import {cookiesInterceptor, spinnerInterceptor} from "./interceptors";
 import {environment} from "../environments/environment.development";
 import {CATEGORY_URL, PRIORITY_URL, STAT_URL, TASK_URL, UTILS_URL} from "./model/consts";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
@@ -14,7 +14,7 @@ import {provideNativeDateAdapter} from "@angular/material/core";
 import {registerLocaleData} from "@angular/common";
 import localeRu from '@angular/common/locales/ru';
 import {MatPaginatorIntl} from "@angular/material/paginator";
-import {TasksMatPaginatorIntl} from "./intl/TasksMatPaginatorIntl";
+import {TasksMatPaginatorIntl} from "./service/intl/TasksMatPaginatorIntl";
 import {ColorPickerModule} from "ngx-color-picker";
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -28,7 +28,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(),
     provideAnimations(),
-    provideHttpClient(withInterceptors([cookiesInterceptor])),
+    provideHttpClient(withInterceptors([cookiesInterceptor, spinnerInterceptor])),
     provideNativeDateAdapter(),
     {provide: UTILS_URL, useValue: environment.backendUrl + '/data'},
     {provide: TASK_URL, useValue: environment.backendUrl + '/task'},
@@ -37,15 +37,12 @@ export const appConfig: ApplicationConfig = {
     {provide: STAT_URL, useValue: environment.backendUrl + '/stat'},
     {provide: LOCALE_ID, useValue: 'ru-RU'},
     {provide: MatPaginatorIntl, useClass: TasksMatPaginatorIntl},
-    importProvidersFrom(ColorPickerModule),
-    importProvidersFrom(TranslateModule.forRoot({
+    importProvidersFrom(ColorPickerModule, TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
     })),
-
-
   ]
 };

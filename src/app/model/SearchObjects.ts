@@ -7,8 +7,13 @@ export class CategorySearchValues {
 }
 
 export class PrioritySearchValues {
-  // title: string = null;
-  // email: string = null;
+  title?: string;
+  email?: string;
+
+  constructor(title?: string, email?: string) {
+    this.title = title;
+    this.email = email;
+  }
 }
 
 export class TaskSearchValues {
@@ -26,5 +31,4 @@ export class TaskSearchValues {
 
   sortColumn = 'completed';
   sortDirection = 'asc';
-
 }

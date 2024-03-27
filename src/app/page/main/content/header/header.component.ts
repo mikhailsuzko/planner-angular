@@ -1,4 +1,4 @@
-import {Component, EventEmitter, input, Output} from '@angular/core';
+import {Component, effect, EventEmitter, input, Output} from '@angular/core';
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {TranslateModule} from "@ngx-translate/core";
@@ -32,11 +32,17 @@ export class HeaderComponent {
   @Output() logoutEvent = new EventEmitter<void>();
   @Output() settingsChangedEvent = new EventEmitter<Priority[]>();
   isMobile: boolean;
+  email = '';
 
 
   constructor(private dialog: MatDialog,
               deviceService: DeviceDetectorService) {
     this.isMobile = deviceService.isMobile();
+    effect(()=>{
+      if (this.userProfile()) {
+        this.email = this.userProfile().email as string;
+      }
+    })
   }
 
   onToggleMenu() {

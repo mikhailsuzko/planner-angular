@@ -2,10 +2,10 @@ import {Observable} from 'rxjs';
 import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {StatDao} from "../interface/StatDao";
-import {Stat} from "../../dto/Stat";
-import {STAT_URL} from "../../model/consts";
-import {HttpMethod, Operation} from "../../model/RequestBFF";
-import {environment} from "../../../environments/environment.development";
+import {Stat} from "../../../dto/Stat";
+import {STAT_URL} from "../../../model/consts";
+import {HttpMethod, Operation} from "../../../model/RequestBFF";
+import {environment} from "../../../../environments/environment.development";
 
 
 @Injectable({providedIn: 'root'})

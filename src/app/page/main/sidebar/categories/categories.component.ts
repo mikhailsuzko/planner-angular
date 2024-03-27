@@ -10,7 +10,7 @@ import {DialogAction, DialogResult} from "../../../../model/DialogResult";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
-import {CategorySearchValues} from "../../../../model/search/SearchObjects";
+import {CategorySearchValues} from "../../../../model/SearchObjects";
 import {MatButtonModule} from "@angular/material/button";
 import {MatListModule} from "@angular/material/list";
 import {Stat} from "../../../../dto/Stat";
@@ -110,9 +110,7 @@ export class CategoriesComponent {
     this.categories().forEach(function (category) {
       if (category.title.toLowerCase().includes(title)) {
         newArr.push(category);
-        console.log(category.title);
       }
-      console.log(category);
     });
     this.filteredCategories = newArr;
   }

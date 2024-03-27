@@ -1,9 +1,9 @@
 import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {UTILS_URL} from "../../model/consts";
-import {HttpMethod, Operation} from "../../model/RequestBFF";
-import {environment} from "../../../environments/environment.development";
+import {UTILS_URL} from "../../../model/consts";
+import {HttpMethod, Operation} from "../../../model/RequestBFF";
+import {environment} from "../../../../environments/environment.development";
 
 
 @Injectable({providedIn: 'root'})

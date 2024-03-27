@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Priority} from "../../../dto/Priority";
 import {LANG_EN, LANG_RU} from "../../main/main.component";
 import {MatDialogModule, MatDialogRef} from "@angular/material/dialog";
-import {PriorityService} from "../../../dao/impl/PriorityService";
+import {PriorityService} from "../../../service/dao/impl/PriorityService";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {DialogAction, DialogResult} from "../../../model/DialogResult";
 import {MatTabsModule} from "@angular/material/tabs";

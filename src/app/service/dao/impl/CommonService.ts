@@ -1,8 +1,8 @@
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {CommonDao} from '../interface/CommonDao';
-import {HttpMethod, Operation} from "../../model/RequestBFF";
-import {environment} from "../../../environments/environment.development";
+import {HttpMethod, Operation} from "../../../model/RequestBFF";
+import {environment} from "../../../../environments/environment.development";
 
 export class CommonService<T> implements CommonDao<T> {
   private readonly backendUrl: string;

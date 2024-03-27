@@ -2,17 +2,17 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment.development";
 import {UserProfile} from "../../dto/UserProfile";
-import {NgClass, NgIf} from "@angular/common";
-import {TaskService} from "../../dao/impl/TaskService";
-import {CategoryService} from "../../dao/impl/CategoryService";
-import {StatService} from "../../dao/impl/StatService";
+import {AsyncPipe, NgClass, NgIf} from "@angular/common";
+import {TaskService} from "../../service/dao/impl/TaskService";
+import {CategoryService} from "../../service/dao/impl/CategoryService";
+import {StatService} from "../../service/dao/impl/StatService";
 import {Category} from "../../dto/Category";
 import {Task} from "../../dto/Task";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {CategoriesComponent} from "./sidebar/categories/categories.component";
 import {TranslateService} from "@ngx-translate/core";
 import {MatIconModule} from "@angular/material/icon";
-import {TaskSearchValues} from "../../model/search/SearchObjects";
+import {TaskSearchValues} from "../../model/SearchObjects";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
@@ -20,12 +20,12 @@ import {HeaderComponent} from "./content/header/header.component";
 import {DashboardData} from "../../model/DashboardData";
 import {Stat} from "../../dto/Stat";
 import {StatComponent} from "./content/stat/stat.component";
-import {Page} from "../../model/Page";
 import {TasksComponent} from "./content/tasks/tasks.component";
 import {PageEvent} from "@angular/material/paginator";
-import {CookieUtils} from "../../utils/CookieUtils";
-import {CommonUtils} from "../../utils/CommonUtils";
-import {TokenUtils} from "../../utils/TokenUtils";
+import {CookieUtils} from "../../service/utils/CookieUtils";
+import {CommonUtils} from "../../service/utils/CommonUtils";
+import {TokenUtils} from "../../service/utils/TokenUtils";
+import {SpinnerService} from "../../service/spinner.service";
 
 export const LANG_RU = 'ru';
 export const LANG_EN = 'en';
@@ -36,7 +36,7 @@ export const LANG_EN = 'en';
   standalone: true,
   imports: [
     NgIf, NgClass, CategoriesComponent,
-    MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, HeaderComponent, StatComponent, TasksComponent
+    MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, HeaderComponent, StatComponent, TasksComponent, AsyncPipe
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css',
@@ -69,11 +69,12 @@ export class MainComponent implements OnInit {
 
 
   constructor(private http: HttpClient,
-              private commonUtils:CommonUtils,
-              private tokenUtils:TokenUtils,
+              private commonUtils: CommonUtils,
+              private tokenUtils: TokenUtils,
               private taskService: TaskService,
               private categoryService: CategoryService,
               private statService: StatService,
+              protected spinner: SpinnerService,
               private deviceService: DeviceDetectorService,
               private translateService: TranslateService
   ) {
@@ -247,7 +248,10 @@ export class MainComponent implements OnInit {
   searchTasks(searchTaskValues: TaskSearchValues) {
     this.cookiesUtils.setCookie(this.cookieTaskSearchValues, JSON.stringify(this.taskSearchValues));
     this.taskService.findTasks(this.taskSearchValues).subscribe({
-      next: ((result: Page<Task>) => {
+      next: ((result: {
+        content: Task[],
+        totalElements: number
+      }) => {
         console.log("searchTasks -> totalElements: " + result.totalElements);
         this.totalTaskFound = result.totalElements;
         this.tasks = result.content;

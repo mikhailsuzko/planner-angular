@@ -2,12 +2,12 @@ import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CommonService} from './CommonService';
 import {PriorityDao} from '../interface/PriorityDao';
-import {CategorySearchValues} from '../../model/search/SearchObjects';
+import {CategorySearchValues} from '../../../model/SearchObjects';
 import {Observable} from 'rxjs';
-import {Priority} from "../../dto/Priority";
-import {PRIORITY_URL} from "../../model/consts";
-import {HttpMethod, Operation} from "../../model/RequestBFF";
-import {environment} from "../../../environments/environment.development";
+import {Priority} from "../../../dto/Priority";
+import {PRIORITY_URL} from "../../../model/consts";
+import {HttpMethod, Operation} from "../../../model/RequestBFF";
+import {environment} from "../../../../environments/environment.development";
 
 
 @Injectable({providedIn: 'root'})

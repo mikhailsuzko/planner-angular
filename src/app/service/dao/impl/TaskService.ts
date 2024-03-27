@@ -3,12 +3,12 @@ import {Inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
 import {CommonService} from './CommonService';
-import {TaskSearchValues} from '../../model/search/SearchObjects';
-import {Task} from '../../dto/Task';
+import {TaskSearchValues} from '../../../model/SearchObjects';
+import {Task} from '../../../dto/Task';
 import {TaskDao} from "../interface/TaskDao";
-import {TASK_URL} from "../../model/consts";
-import {HttpMethod, Operation} from "../../model/RequestBFF";
-import {environment} from "../../../environments/environment.development";
+import {TASK_URL} from "../../../model/consts";
+import {HttpMethod, Operation} from "../../../model/RequestBFF";
+import {environment} from "../../../../environments/environment.development";
 
 
 @Injectable({providedIn: 'root'})

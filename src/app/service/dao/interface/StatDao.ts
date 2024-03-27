@@ -1,5 +1,5 @@
 import {Observable} from 'rxjs';
-import {Stat} from "../../dto/Stat";
+import {Stat} from "../../../dto/Stat";
 
 export interface StatDao {
 
