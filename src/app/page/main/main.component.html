@@ -5,12 +5,12 @@
     <app-categories
       [categories]="categories"
       [showSidebar]="showSidebar"
+      [selectedCategory]="selectedCategory"
       (toggleSidebarEvent)="toggleMenu($event)"
       [stat]="stat"
       (addCategoryEvent)="addCategory($event)"
       (updateCategoryEvent)="updateCategory($event)"
       (deleteCategoryEvent)="deleteCategory($event)"
-      (searchCategoryEvent)="searchCategory($event)"
       (selectedCategoryEvent)="categorySelected($event)"
 
     />
@@ -22,7 +22,11 @@
 
     <app-header
       [showStat]="showStat"
+      [showSearch]="showSearch"
+      [userProfile]="userProfile"
       (toggleStatEvent)="toggleStat($event)"
+      (toggleSearchEvent)="toggleSearch($event)"
+      (settingsChangedEvent)="settingsChanged()"
 
       [showSidebar]="showSidebar"
       (toggleSidebarEvent)="toggleMenu($event)"
@@ -37,7 +41,6 @@
       [selectedCategory]="selectedCategory"
       [taskSearchValues]="taskSearchValues"
       [categories]="categories"
-      [priorities]="priorities"
       [totalTasksFound]="totalTaskFound"
       [showSearch]="showSearch"
 

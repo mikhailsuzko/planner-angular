@@ -22,6 +22,15 @@
             }
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="onToggleSearch()">
+            @if (showSearch()) {
+              {{ 'TASKS.HIDE' |translate }}
+            } @else {
+              {{ 'TASKS.SHOW' |translate }}
+            }
+          </a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
              aria-expanded="false">
@@ -40,11 +49,33 @@
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
         </li>
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="button">Search</button>
-      </form>
       <button class="btn btn-outline-success" type="button" (click)="logout()">Logout</button>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <p class="text-center padding-25 account">
+          {{userProfile().email}}
+        </p>
+        <button mat-menu-item (click)="showSettings()">
+          <mat-icon>settings</mat-icon>
+          <span>{{'COMMON.SETTINGS' | translate}}</span>
+        </button>
+
+        <!--                справка-->
+        <button mat-menu-item *ngIf="!isMobile" class="header-icon">
+          <mat-icon>help</mat-icon>
+          <span>{{'COMMON.HELP' | translate}}</span>
+        </button>
+
+        <!--                выход из системы-->
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>login</mat-icon>
+          <span>{{'COMMON.EXIT' | translate}}</span>
+        </button>
+
+
+      </mat-menu>
     </div>
   </div>
 </nav>

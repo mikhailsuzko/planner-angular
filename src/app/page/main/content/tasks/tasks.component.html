@@ -43,7 +43,7 @@
         <mat-select [(ngModel)]="filterPriorityId" (selectionChange)="initSearch()"
                     placeholder="{{'TASKS.FILTER-PRIORITY' | translate}}">
           <mat-option [value]="null">{{ 'PRIORITY.ALL' | translate }}</mat-option>
-          <mat-option *ngFor="let priority of priorities()"
+          <mat-option *ngFor="let priority of priorities"
                       [value]="priority.id">{{ priority.title }}
           </mat-option>
         </mat-select>

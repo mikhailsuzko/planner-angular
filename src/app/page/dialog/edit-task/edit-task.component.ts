@@ -2,10 +2,10 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
-import {Category} from "../../dto/Category";
-import {Priority} from "../../dto/Priority";
-import {DialogAction, DialogResult} from "../../model/DialogResult";
-import {Task} from '../../dto/Task';
+import {Category} from "../../../dto/Category";
+import {Priority} from "../../../dto/Priority";
+import {DialogAction, DialogResult} from "../../../model/DialogResult";
+import {Task} from '../../../dto/Task';
 import {ConfirmComponent} from "../confirm/confirm.component";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {FormsModule} from "@angular/forms";
@@ -72,7 +72,7 @@ export class EditTaskComponent implements OnInit {
     this.newTitle = this.task.title;
 
     if (this.task.priority) {
-      this.newPriorityId = this.task.priority.id;
+      this.newPriorityId = this.task.priority.id!;
     }
 
     if (this.task.category) {

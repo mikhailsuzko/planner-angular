@@ -8,7 +8,7 @@ import {
   MatDialogRef,
   MatDialogTitle
 } from "@angular/material/dialog";
-import {Category} from "../../dto/Category";
+import {Category} from "../../../dto/Category";
 import {MatFormField, MatLabel} from "@angular/material/form-field";
 import {FormsModule} from "@angular/forms";
 import {MatButton, MatIconButton} from "@angular/material/button";
@@ -16,7 +16,7 @@ import {MatInput} from "@angular/material/input";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {NgIf} from "@angular/common";
 import {MatIcon} from "@angular/material/icon";
-import {DialogAction, DialogResult} from "../../model/DialogResult";
+import {DialogAction, DialogResult} from "../../../model/DialogResult";
 import {ConfirmComponent} from "../confirm/confirm.component";
 
 @Component({

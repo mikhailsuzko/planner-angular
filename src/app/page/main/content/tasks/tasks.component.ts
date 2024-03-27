@@ -12,9 +12,9 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatListItemMeta} from "@angular/material/list";
-import {ConfirmComponent} from "../../../../dialog/confirm/confirm.component";
+import {ConfirmComponent} from "../../../dialog/confirm/confirm.component";
 import {DialogAction} from "../../../../model/DialogResult";
-import {EditTaskComponent} from "../../../../dialog/edit-task/edit-task.component";
+import {EditTaskComponent} from "../../../dialog/edit-task/edit-task.component";
 import {Priority} from "../../../../dto/Priority";
 import {TaskDatePipe} from "../../../../pipe/task-date.pipe";
 import {MatPaginatorModule, PageEvent} from "@angular/material/paginator";
@@ -24,6 +24,8 @@ import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {MatDatepickerModule, MatDateRangeInput} from "@angular/material/datepicker";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {PriorityService} from "../../../../dao/impl/PriorityService";
+import {CommonUtils} from "../../../../utils/CommonUtils";
 
 @Component({
   selector: 'app-tasks',
@@ -68,8 +70,8 @@ export class TasksComponent implements OnInit {
   selectedCategory = input.required<Category>();
   taskSearchValues = input.required<TaskSearchValues>();
   categories = input.required<Category[]>();
-  priorities = input.required<Priority[]>();
   totalTasksFound = input.required<number>();
+  priorities!: Priority[];
 
   displayedColumns: string[] = ['color', 'id', 'title', 'date', 'priority', 'category', 'operations', 'completed'];
   dataSource: MatTableDataSource<Task> = new MatTableDataSource<Task>(); // источник данных для таблицы
@@ -109,7 +111,8 @@ export class TasksComponent implements OnInit {
   constructor(private dialog: MatDialog,
               private deviceService: DeviceDetectorService,
               private translate: TranslateService,
-  ) {
+              private commonUtils:CommonUtils,
+              private priorityService: PriorityService) {
     this.isMobile = this.deviceService.isMobile();
     effect(() => {
       this.assignTableSource();
@@ -123,6 +126,19 @@ export class TasksComponent implements OnInit {
       this.initTranslations();
     });
     this.initDateRangeForm();
+    this.requestPriorities();
+  }
+
+  private requestPriorities() {
+    this.priorityService.findAll().subscribe({
+      next: (response => {
+        this.priorities = response;
+        console.log("requestPriorities -> response: " + response);
+      }),
+      error: (error => {
+        this.commonUtils.processError("requestPriorities", error, () => this.requestPriorities());
+      })
+    })
   }
 
   initDateRangeForm(): void {
@@ -212,7 +228,7 @@ export class TasksComponent implements OnInit {
         task: task,
         title: title,
         categories: this.categories(),
-        priorities: this.priorities()
+        priorities: this.priorities
       },
       autoFocus: false,
       maxHeight: '90vh',

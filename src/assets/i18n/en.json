@@ -64,6 +64,8 @@
     "PRIORITY": "Priority",
     "CATEGORY": "Category",
     "SHOW-HIDE-SEARCH": "Show/hide search",
+    "SHOW": "Show search",
+    "HIDE": "Hide search",
     "HIDE-SEARCH": "Close search",
     "RESET": "Reset",
     "CONFIRM-DELETE": "Delete \"{{name}}\" ?",

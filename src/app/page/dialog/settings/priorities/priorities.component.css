@@ -1,0 +1,25 @@
+.priority-titles {
+  vertical-align: middle;
+  width: 150px;
+  float: left;
+}
+
+.priority-color {
+  vertical-align: middle;
+  width: 40px;
+  float: left
+}
+
+
+.priorities p {
+  margin: 0 !important;
+}
+
+.little {
+  font-size: 14px;
+  color: rgba(99, 99, 99, 0.98);
+  margin-top: 20px;
+}
+
+
+

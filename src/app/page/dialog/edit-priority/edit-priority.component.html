@@ -1,0 +1,33 @@
+<mat-dialog-content>
+  <p mat-dialog-title>{{ dialogTitle }}</p>
+  <mat-form-field>
+    <mat-label>{{ 'PRIORITY.NAME-20SYMBOLS' | translate }}</mat-label>
+    <input #inputTitle matInput maxlength="20"
+           [(ngModel)]="priority.title"
+           (keydown.enter)="confirm()"/>
+
+    <button *ngIf="priority && priority.title.trim().length > 0"
+            class="clear-icon" matSuffix mat-icon-button
+            (click)="priority.title = ''">
+      <mat-icon>clear</mat-icon>
+    </button>
+  </mat-form-field>
+  <span [(colorPicker)]="priority.color" [style.background]="priority.color" class="color-circle"></span>
+</mat-dialog-content>
+
+<mat-dialog-actions class="padding-bottom-20">
+  <div class="col-12 text-center nopadding">
+    <button mat-raised-button color="primary"
+            (click)="confirm()"
+            [disabled]="inputTitle.value.trim().length==0">
+      {{ 'COMMON.SAVE' | translate }}
+    </button>
+    <button mat-raised-button (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</button>
+  </div>
+
+  <div class="col-12 text-center">
+    <button class="red" mat-button *ngIf="canDelete" (click)="delete()">
+      {{ 'COMMON.DELETE' | translate }}
+    </button>
+  </div>
+</mat-dialog-actions>

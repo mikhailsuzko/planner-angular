@@ -6,7 +6,7 @@ import {
   MatDialogRef,
   MatDialogTitle
 } from "@angular/material/dialog";
-import {DialogAction, DialogResult} from "../../model/DialogResult";
+import {DialogAction, DialogResult} from "../../../model/DialogResult";
 import {TranslateModule} from "@ngx-translate/core";
 import {MatButton} from "@angular/material/button";
 

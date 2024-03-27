@@ -1,0 +1,36 @@
+<mat-dialog-content>
+  <mat-tab-group animationDuration="0ms">
+    <mat-tab label="{{'SETTINGS.PRIORITY' | translate}}">
+      <img ngSrc="/assets/img/loading.gif" alt="Loading" class="loading" *ngIf="isLoading" height="637" width="630">
+
+      <app-priorities
+        [priorities]="priorities"
+        (addPriorityEvent)="addPriority($event)"
+        (deletePriorityEvent)="deletePriority($event)"
+        (updatePriorityEvent)="updatePriority($event)">
+      </app-priorities>
+    </mat-tab>
+
+    <mat-tab label="{{'SETTINGS.LANG' | translate}}" [ngClass]="{'tab-lang': true}">
+      <label>{{ 'LANG.SELECT' | translate }}</label>
+      <mat-radio-group class="radio-group"
+                       [(ngModel)]="lang"
+                       (ngModelChange)="langChanged()">
+
+        <mat-radio-button value="{{en}}">
+          {{ 'LANG.EN' | translate }}
+        </mat-radio-button>
+
+        <mat-radio-button value="{{ru}}">
+          {{ 'LANG.RU' | translate }}
+        </mat-radio-button>
+      </mat-radio-group>
+    </mat-tab>
+  </mat-tab-group>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="close()">
+    {{ 'COMMON.CLOSE' | translate }}
+  </button>
+</mat-dialog-actions>

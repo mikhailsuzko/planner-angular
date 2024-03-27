@@ -1,11 +1,11 @@
-import {Component, effect, EventEmitter, input, Output} from '@angular/core';
+import {Component, effect, EventEmitter, Input, input, Output} from '@angular/core';
 import {Category} from "../../../../dto/Category";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {MatIconModule} from "@angular/material/icon";
 import {MatDialog} from "@angular/material/dialog";
-import {EditCategoryComponent} from "../../../../dialog/edit-category/edit-category.component";
+import {EditCategoryComponent} from "../../../dialog/edit-category/edit-category.component";
 import {DialogAction, DialogResult} from "../../../../model/DialogResult";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
@@ -35,8 +35,9 @@ export class CategoriesComponent {
   @Output() toggleSidebarEvent = new EventEmitter<boolean>();
 
   stat = input.required<Stat>();
-
   categories = input.required<Category[]>();
+  filteredCategories!: Category[];
+
   @Output() addCategoryEvent = new EventEmitter<Category>();
   @Output() updateCategoryEvent = new EventEmitter<Category>();
   @Output() deleteCategoryEvent = new EventEmitter<Category>();
@@ -44,17 +45,19 @@ export class CategoriesComponent {
 
   searchTitle = "";
   categorySearchValues: CategorySearchValues = new CategorySearchValues("");
-  @Output() searchCategoryEvent = new EventEmitter<CategorySearchValues>(); // передаем строку для поиска
 
   emptyCategory = new Category('');
-  selectedCategory = this.emptyCategory
+  @Input() selectedCategory!: Category;
 
   constructor(detectorService: DeviceDetectorService,
               public dialog: MatDialog,
               private translateService: TranslateService) {
     this.isMobile = detectorService.isMobile()
     effect(() => {
-      console.log("constructor-> categories:" + this.categories());
+      if (this.categories()) {
+        this.filteredCategories = this.categories();
+        this.search();
+      }
     });
   }
 
@@ -101,8 +104,17 @@ export class CategoriesComponent {
   }
 
   search(): void {
+    const title = this.searchTitle.toLowerCase();
+    const newArr: Category[] = [];
     this.categorySearchValues.title = this.searchTitle
-    this.searchCategoryEvent.emit(this.categorySearchValues);
+    this.categories().forEach(function (category) {
+      if (category.title.toLowerCase().includes(title)) {
+        newArr.push(category);
+        console.log(category.title);
+      }
+      console.log(category);
+    });
+    this.filteredCategories = newArr;
   }
 
   showCategory(category: Category) {

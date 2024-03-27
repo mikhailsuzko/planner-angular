@@ -1,0 +1,25 @@
+<div class="vertical-middle priorities" *ngFor="let priority of priorities(), let index = index">
+  <div class="row align-self-baseline">
+    <div class="col-7 ">
+      <a class="pointer" (click)="openEditDialog(priority)"> {{priority.title}}</a>
+    </div>
+    <div class="col-2 text-right" (click)="openEditDialog(priority)">
+      <span [style.background]="priority.color" class="color-circle"></span>
+    </div>
+    <div class="col-1 text-left">
+      <p class="pointer gray" (click)="openDeleteDialog(priority)">
+        <mat-icon>delete</mat-icon>
+      </p>
+    </div>
+    <div class="col-1 text-left" *ngIf="!isMobile">
+      <p class="pointer gray" (click)="openEditDialog(priority)">
+        <mat-icon>edit</mat-icon>
+      </p>
+    </div>
+  </div>
+</div>
+
+<p class="little" (click)="openAddDialog()">
+  <span class="link">{{'PRIORITY.ADD' | translate}}</span>
+</p>
+

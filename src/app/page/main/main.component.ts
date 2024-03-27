@@ -1,11 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment.development";
 import {UserProfile} from "../../dto/UserProfile";
 import {NgClass, NgIf} from "@angular/common";
-import {PriorityService} from "../../dao/impl/PriorityService";
-import {Priority} from "../../dto/Priority";
 import {TaskService} from "../../dao/impl/TaskService";
 import {CategoryService} from "../../dao/impl/CategoryService";
 import {StatService} from "../../dao/impl/StatService";
@@ -15,7 +12,7 @@ import {DeviceDetectorService} from "ngx-device-detector";
 import {CategoriesComponent} from "./sidebar/categories/categories.component";
 import {TranslateService} from "@ngx-translate/core";
 import {MatIconModule} from "@angular/material/icon";
-import {CategorySearchValues, TaskSearchValues} from "../../model/search/SearchObjects";
+import {TaskSearchValues} from "../../model/search/SearchObjects";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
@@ -26,6 +23,9 @@ import {StatComponent} from "./content/stat/stat.component";
 import {Page} from "../../model/Page";
 import {TasksComponent} from "./content/tasks/tasks.component";
 import {PageEvent} from "@angular/material/paginator";
+import {CookieUtils} from "../../utils/CookieUtils";
+import {CommonUtils} from "../../utils/CommonUtils";
+import {TokenUtils} from "../../utils/TokenUtils";
 
 export const LANG_RU = 'ru';
 export const LANG_EN = 'en';
@@ -44,7 +44,6 @@ export const LANG_EN = 'en';
 export class MainComponent implements OnInit {
 
   userProfile!: UserProfile;
-  priorities!: Priority[];
   categories!: Category[];
   tasks!: Task[];
 
@@ -54,20 +53,29 @@ export class MainComponent implements OnInit {
   dash: DashboardData = new DashboardData(0, 0);
   stat = new Stat(0, 0);
   showStat = true;
-  selectedCategory!: Category;
+  emptyCategory = new Category('');
+  selectedCategory: Category = this.emptyCategory;
 
   taskSearchValues: TaskSearchValues = new TaskSearchValues();
   totalTaskFound = 0;
   showSearch = false;
 
+  cookiesUtils = new CookieUtils();
+  readonly cookieTaskSearchValues = 'todo:searchValues';
+  readonly cookieShowStat = 'todo:showStat';
+  readonly cookieShowMenu = 'todo:showMenu';
+  readonly cookieShowSearch = 'todo:showSearch';
+  readonly cookieLang = 'todo:lang';
+
+
   constructor(private http: HttpClient,
-              private router: Router,
+              private commonUtils:CommonUtils,
+              private tokenUtils:TokenUtils,
               private taskService: TaskService,
               private categoryService: CategoryService,
-              private priorityService: PriorityService,
               private statService: StatService,
               private deviceService: DeviceDetectorService,
-              translateService: TranslateService
+              private translateService: TranslateService
   ) {
     translateService.setDefaultLang(LANG_RU)
     translateService.use(LANG_RU)
@@ -77,6 +85,7 @@ export class MainComponent implements OnInit {
 
   toggleMenu(showSidebar: boolean) {
     this.showSidebar = showSidebar;
+    this.cookiesUtils.setCookie(this.cookieShowMenu, String(this.showSidebar));
   }
 
   ngOnInit(): void {
@@ -84,17 +93,27 @@ export class MainComponent implements OnInit {
     this.isMobile = this.deviceService.isMobile();
     this.isTablet = this.deviceService.isTablet();
 
+    this.initSidebar()
+    this.initLangCookie();
+    if (this.isMobile) {
+      this.showStat = false;
+    } else {
+      this.initShowStatCookie();
+    }
+    this.initShowSearchCookie();
+
     window.history.pushState({}, "", document.location.href.split("?")[0]);
-    this.requestUserData();
+    this.requestUserProfile();
+    this.requestCategories(true);
+    this.updateOverallStat();
   }
 
-  private requestUserData(): void {
-    console.log("MainComponent -> requestUserData");
-    this.requestUserProfile();
-    this.requestCategories();
-    this.requestPriorities();
-    this.updateOverallStat();
-    this.searchTasks(this.taskSearchValues);
+  initSidebar(): void {
+    if (this.isMobile) {
+      this.showSidebar = false;
+    } else {
+      this.initShowMenuCookie();
+    }
   }
 
   private requestUserProfile(): void {
@@ -106,7 +125,7 @@ export class MainComponent implements OnInit {
         }),
         error: (error => {
           console.log(error);
-          this.redirectToLogin();
+          this.tokenUtils.redirectToLogin();
         })
       }
     );
@@ -121,57 +140,39 @@ export class MainComponent implements OnInit {
       },
       error: (error => {
         console.log("exchangeRefreshToken -> error: " + error.status + ": " + error.message);
-        this.redirectToLogin();
+        this.tokenUtils.redirectToLogin();
       })
     });
   }
 
-  private redirectToLogin() {
-    console.log("MainComponent -> redirectToLogin");
-    this.router.navigate(['/login']);
-  }
 
   logout() {
     console.log("MainComponent -> logout");
     this.http.get(environment.bffUrl + '/logout').subscribe({
         next: (() => {
-          this.redirectToLogin();
+          this.tokenUtils.redirectToLogin();
         }),
         error: (error => {
           console.log(error);
-          this.redirectToLogin();
+          this.tokenUtils.redirectToLogin();
         })
       }
     );
   }
 
-  private requestPriorities() {
-    this.priorityService.findAll().subscribe({
-      next: (response => {
-        this.priorities = response;
-        console.log("requestPriorities -> response: " + response);
-      }),
-      error: (error => {
-        this.processError("requestPriorities", error, () => this.requestPriorities());
-      })
-    })
-  }
 
-  processError(method: string, error: any, callback: Function) {
-    console.log(method + " -> error: " + error.status + ": " + error.message);
-    if (error && error.status === 403) {
-      this.exchangeRefreshToken(callback);
-    }
-  }
-
-  private requestCategories() {
+  private requestCategories(init: boolean = false) {
     this.categoryService.findAll().subscribe({
       next: (response => {
         this.categories = response;
+        if (init) {
+          this.initSearchCookie();
+          this.categorySelected(this.selectedCategory);
+        }
         console.log("requestCategories -> response: " + response);
       }),
       error: (error => {
-        this.processError("requestCategories", error, () => this.requestCategories())
+        this.commonUtils.processError("requestCategories", error, () => this.requestCategories())
       })
     })
   }
@@ -183,7 +184,7 @@ export class MainComponent implements OnInit {
           this.requestCategories();
         }),
         error: (error => {
-          this.processError("addCategory", error, () => this.addCategory(category))
+          this.commonUtils.processError("addCategory", error, () => this.addCategory(category))
         })
       }
     );
@@ -196,32 +197,27 @@ export class MainComponent implements OnInit {
           this.requestCategories();
         }),
         error: (error => {
-          this.processError("updateCategory", error, () => this.updateCategory(category))
+          this.commonUtils.processError("updateCategory", error, () => this.updateCategory(category))
         })
       }
     );
   }
 
   deleteCategory(category: Category): void {
+    if (this.selectedCategory && category.id === this.selectedCategory.id) {
+      this.selectedCategory = this.emptyCategory;
+      this.taskSearchValues.categoryId = null;
+      this.searchTasks(this.taskSearchValues);
+    }
     this.categoryService.delete(category.id!).subscribe({
       next: (result => {
         console.log("Category '" + category.title + "' is deleted");
         this.requestCategories();
       }),
       error: (error => {
-        this.processError("deleteCategory", error, () => this.deleteCategory(category))
+        this.commonUtils.processError("deleteCategory", error, () => this.deleteCategory(category))
       })
     });
-  }
-
-  searchCategory(categorySearchValues: CategorySearchValues): void {
-    if (categorySearchValues.title.trim().length == 0) {
-      this.requestCategories();
-    } else {
-      this.categoryService.findCategories(categorySearchValues).subscribe(result => {
-        this.categories = result;
-      });
-    }
   }
 
   categorySelected(category: Category) {
@@ -229,24 +225,27 @@ export class MainComponent implements OnInit {
     this.selectedCategory = category;
 
     if (category && category.id) {
+      this.taskSearchValues.categoryId = category.id;
       this.dash.completedTotal = category.completedCount;
       this.dash.uncompletedTotal = category.uncompletedCount;
     } else {
+      this.taskSearchValues.categoryId = null;
       this.dash.completedTotal = this.stat.completedTotal;
       this.dash.uncompletedTotal = this.stat.uncompletedTotal;
     }
 
     this.taskSearchValues.pageNumber = 0;
-    this.taskSearchValues.categoryId = category.id;
 
     this.searchTasks(this.taskSearchValues);
   }
 
   toggleStat(showStat: boolean): void {
     this.showStat = showStat;
+    this.cookiesUtils.setCookie(this.cookieShowStat, String(showStat));
   }
 
   searchTasks(searchTaskValues: TaskSearchValues) {
+    this.cookiesUtils.setCookie(this.cookieTaskSearchValues, JSON.stringify(this.taskSearchValues));
     this.taskService.findTasks(this.taskSearchValues).subscribe({
       next: ((result: Page<Task>) => {
         console.log("searchTasks -> totalElements: " + result.totalElements);
@@ -255,11 +254,10 @@ export class MainComponent implements OnInit {
         console.log("searchTasks -> tasks: " + this.tasks);
       }),
       error: (error => {
-        this.processError("searchTasks", error, () => this.searchTasks(searchTaskValues));
+        this.commonUtils.processError("searchTasks", error, () => this.searchTasks(searchTaskValues));
       })
     });
   }
-
 
 
   private updateCategoryStat(category: Category) {
@@ -275,7 +273,7 @@ export class MainComponent implements OnInit {
         }
       },
       error: (error => {
-        this.processError("updateCategoryStat", error, () => this.updateCategoryStat(category))
+        this.commonUtils.processError("updateCategoryStat", error, () => this.updateCategoryStat(category))
       })
     });
   }
@@ -290,7 +288,7 @@ export class MainComponent implements OnInit {
         }
       },
       error: (error => {
-        this.processError("updateOverallStat", error, () => this.updateOverallStat())
+        this.commonUtils.processError("updateOverallStat", error, () => this.updateOverallStat())
       })
     })
   }
@@ -302,7 +300,7 @@ export class MainComponent implements OnInit {
         this.updateCategoriesStatAndTasks(task);
       },
       error: (error => {
-        this.processError("updateTask", error, () => this.updateTask(task))
+        this.commonUtils.processError("updateTask", error, () => this.updateTask(task))
       })
     });
   }
@@ -314,7 +312,7 @@ export class MainComponent implements OnInit {
         this.updateCategoriesStatAndTasks(task);
       },
       error: (error => {
-        this.processError("addTask", error, () => this.addTask(task))
+        this.commonUtils.processError("addTask", error, () => this.addTask(task))
       })
     });
   }
@@ -326,7 +324,7 @@ export class MainComponent implements OnInit {
         this.updateCategoriesStatAndTasks(task);
       },
       error: (error => {
-        this.processError("deleteTask", error, () => this.deleteTask(task))
+        this.commonUtils.processError("deleteTask", error, () => this.deleteTask(task))
       })
     });
 
@@ -356,6 +354,102 @@ export class MainComponent implements OnInit {
 
   toggleSearch(showSearch: boolean): void {
     this.showSearch = showSearch;
+    this.cookiesUtils.setCookie(this.cookieShowSearch, String(showSearch));
   }
 
+  initSearchCookie(): boolean {
+    const cookie = this.cookiesUtils.getCookie(this.cookieTaskSearchValues);
+    if (!cookie) {
+      return false;
+    }
+
+    const cookieJSON = JSON.parse(cookie);
+    if (!cookieJSON) {
+      return false;
+    }
+
+    if (!this.taskSearchValues) {
+      this.taskSearchValues = new TaskSearchValues();
+    }
+    const tmpPageSize = cookieJSON.pageSize;
+    if (tmpPageSize) {
+      this.taskSearchValues.pageSize = Number(tmpPageSize);
+    }
+    const tmpCategoryId = cookieJSON.categoryId;
+    if (tmpCategoryId) {
+      this.taskSearchValues.categoryId = Number(tmpCategoryId);
+      this.selectedCategory = this.getCategoryFromArray(tmpCategoryId);
+    }
+    const tmpPriorityId = cookieJSON.priorityId as number;
+    if (tmpPriorityId) {
+      this.taskSearchValues.priorityId = Number(tmpPriorityId);
+    }
+    const tmpTitle = cookieJSON.title;
+    if (tmpTitle) {
+      this.taskSearchValues.title = tmpTitle;
+    }
+    const tmpCompleted = cookieJSON.completed as boolean;
+    if (tmpCompleted) {
+      this.taskSearchValues.completed = tmpCompleted;
+    }
+    const tmpSortColumn = cookieJSON.sortColumn;
+    if (tmpSortColumn) {
+      this.taskSearchValues.sortColumn = tmpSortColumn;
+    }
+    const tmpSortDirection = cookieJSON.sortDirection;
+    if (tmpSortDirection) {
+      this.taskSearchValues.sortDirection = tmpSortDirection;
+    }
+    const tmpDateFrom = cookieJSON.dateFrom;
+    if (tmpDateFrom) {
+      this.taskSearchValues.dateFrom = new Date(tmpDateFrom);
+    }
+    const tmpDateTo = cookieJSON.dateTo;
+    if (tmpDateTo) {
+      this.taskSearchValues.dateTo = new Date(tmpDateTo);
+    }
+    return true;
+  }
+
+  getCategoryFromArray(id: number): Category {
+    return this.categories.find(t => t.id === id)!;
+  }
+
+  initShowSearchCookie(): void {
+    const val = this.cookiesUtils.getCookie(this.cookieShowSearch);
+    if (val) {
+      this.showSearch = (val === 'true');
+    }
+
+  }
+
+  initShowStatCookie(): void {
+    if (!this.isMobile) {
+      const val = this.cookiesUtils.getCookie(this.cookieShowStat);
+      if (val) {
+        this.showStat = (val === 'true');
+      }
+    }
+  }
+
+  initShowMenuCookie(): void {
+    const val = this.cookiesUtils.getCookie(this.cookieShowMenu);
+    if (val) {
+      this.showSidebar = (val === 'true');
+    }
+  }
+
+  initLangCookie(): void {
+    const val = this.cookiesUtils.getCookie(this.cookieLang);
+    if (val) {
+      this.translateService.use(val);
+    } else {
+      this.translateService.use(LANG_RU);
+    }
+  }
+
+  settingsChanged() {
+    this.searchTasks(this.taskSearchValues);
+    this.cookiesUtils.setCookie(this.cookieLang, this.translateService.currentLang);
+  }
 }

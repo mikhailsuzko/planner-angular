@@ -15,6 +15,7 @@ import {registerLocaleData} from "@angular/common";
 import localeRu from '@angular/common/locales/ru';
 import {MatPaginatorIntl} from "@angular/material/paginator";
 import {TasksMatPaginatorIntl} from "./intl/TasksMatPaginatorIntl";
+import {ColorPickerModule} from "ngx-color-picker";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -36,6 +37,7 @@ export const appConfig: ApplicationConfig = {
     {provide: STAT_URL, useValue: environment.backendUrl + '/stat'},
     {provide: LOCALE_ID, useValue: 'ru-RU'},
     {provide: MatPaginatorIntl, useClass: TasksMatPaginatorIntl},
+    importProvidersFrom(ColorPickerModule),
     importProvidersFrom(TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
