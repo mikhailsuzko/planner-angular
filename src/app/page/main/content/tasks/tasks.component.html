@@ -1,6 +1,6 @@
 <div [@searchRegion]="animationState" class="search-region">
   <div class="gap20"></div>
-  <div class="row " style="font-size: 8px">
+  <div class="row">
     <div class="col-md-2 col-sm-12">
       <mat-form-field class="full-width" appearance="outline">
         <label class="nopadding nomargin">
@@ -133,12 +133,12 @@
 
     <div class="col-md-2 text-center align-self-center">
       <div class="row align-content-center">
-      @if (!isMobile) {
-        <span class="pointer col-md-auto" (click)="onToggleSearch()">  {{ 'TASKS.HIDE-SEARCH' | translate }}</span>
-      }
-      <button mat-icon-button class="col-md-auto" (click)="onToggleSearch()">
-        <mat-icon class="height-25">keyboard_arrow_up</mat-icon>
-      </button>
+        @if (!isMobile) {
+          <span class="pointer col-md-auto" (click)="onToggleSearch()">  {{ 'TASKS.HIDE-SEARCH' | translate }}</span>
+        }
+        <button mat-icon-button class="col-md-auto" (click)="onToggleSearch()">
+          <mat-icon class="height-25">keyboard_arrow_up</mat-icon>
+        </button>
       </div>
     </div>
 
@@ -162,119 +162,185 @@
 
 
 <div class="row nomargin"
-     [ngClass]="{'padding-15': !isMobile, 'mobile-background padding-25 nopadding-bottom': isMobile}">
-  <div class="col-sm-12" [ngClass]="{'col-md-2': !isMobile}" *ngIf="!isMobile">
+     [ngClass]="{'padding-25': !isMobile, 'mobile-background padding-25-nopadding-bottom': isMobile}">
+  <div class="col-md-3 col-sm-3"  *ngIf="!isMobile">
     <button class="full-width"
             mat-raised-button color="primary" (click)="addNewTask()">{{ 'TASKS.ADD' | translate }}
     </button>
   </div>
 
-  <div class="col-md-4 col-sm-12 text-left align-middle align-self-center " *ngIf="!isMobile">
-    <span class="link " translate (click)="onToggleSearch()">TASKS.SHOW-HIDE-SEARCH </span>
-  </div>
-
-  <div class="col-md-6 col-sm-6 nopadding-left" [ngClass]="{'text-left': isMobile, 'text-right': !isMobile}">
+  <div class="col-md-9 col-sm-9 nopadding-left" [ngClass]="{'text-left': isMobile, 'text-right': !isMobile}">
     <span class="founded-text" [ngClass]="{'mobile-founded-text': isMobile}">
     {{ 'TASKS.FOUNDED' | translate }}: {{ totalTasksFound() }}</span>
   </div>
 </div>
 
-<div class="row nopadding nomargin">
+<div class="row nopadding nomargin"
+     [ngClass]="{'mobile-background': isMobile}">
   <div class="col-12 nopadding nomargin">
-    <div class="desktop-task-list nopadding-top" *ngIf="!isMobile">
+    <div class="desktop-task-list nopadding-top">
       <!--No tasks-->
       <div class="card" *ngIf="tasks() && tasks().length === 0">
         <p class="not-found" translate>COMMON.NOT-FOUND</p>
       </div>
 
-      <div class="card" *ngIf="!isMobile && tasks() && tasks().length > 0">
-        <div class="card-body">
-          <div class="table-responsive" *ngIf="tasks() && (tasks().length > 0)">
-            <div class="card" *ngIf="tasks() && tasks().length === 0">
-              <p class="not-found" translate>COMMON.NOT-FOUND</p>
+      @if (tasks() && tasks().length > 0) {
+        @if (!isMobile) {
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive" *ngIf="tasks() && (tasks().length > 0)">
+                <table aria-describedby="tasks" mat-table [dataSource]="dataSource" matSort>
+                  <ng-container matColumnDef="color">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td class="col-color" mat-cell *matCellDef="let task"
+                        [style.background-color]="getPriorityColor(task)"
+                    ></td>
+                  </ng-container>
+                  <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td class="col-id" mat-cell *matCellDef="let index = index;">
+                      {{ index + 1 + taskSearchValues().pageNumber * taskSearchValues().pageSize }}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="title">
+                    <th mat-header-cell *matHeaderCellDef> {{ 'TASKS.NAME' | translate }}</th>
+                    <td class="col-title title pointer" mat-cell *matCellDef="let task"
+                        [class.completed]="task.completed" (click)="editTask(task)">
+                      {{ task.title }}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef> {{ 'TASKS.DATE' | translate }}</th>
+                    <td class="col-date" mat-cell *matCellDef="let task"
+                        [ngClass]="{'completed': task.completed, 'nodate': task.taskDate == null}">
+                      {{ task.taskDate | taskDate }}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="priority">
+                    <th mat-header-cell *matHeaderCellDef> {{ 'TASKS.PRIORITY' | translate }}</th>
+                    <td class="col-priority" mat-cell *matCellDef="let task"
+                        [ngClass]="{'completed': task.completed, 'nopriority': task.priority == null}"
+                    >
+                      {{ task.priority ? task.priority.title : translateWithoutPriority }}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="category">
+                    <th mat-header-cell *matHeaderCellDef> {{ 'TASKS.CATEGORY' | translate }}</th>
+                    <td class="col-category"
+                        mat-cell *matCellDef="let task"
+                        [ngClass]="{'completed': task.completed, 'nocategory': task.category == null}"
+                    >
+                      {{ task.category ? task.category.title : translateWithoutCategory }}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="operations">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td class="col-operations text-right nopadding-right" mat-cell *matCellDef="let task">
+                      <button mat-icon-button (click)="openDeleteDialog(task)"
+                              class="delete-icon  nomargin">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                      <button mat-icon-button class="edit-icon  nomargin" (click)="editTask(task)">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="completed">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td class="col-id" mat-cell *matCellDef="let task"
+                        [class.completed]="task.completed">
+                      <mat-checkbox class="table-icon  "
+                                    (click)="$event.stopPropagation()"
+                                    (change)="$event ? onToggleCompleted(task) : null"
+                                    [checked]="task.completed">
+                      </mat-checkbox>
+                    </td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns; "></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <mat-paginator showFirstLastButtons
+                               (page)="pageChanged($event)"
+                               [pageIndex]="taskSearchValues().pageNumber"
+                               [pageSize]="taskSearchValues().pageSize"
+                               [length]="totalTasksFound()"
+                               [pageSizeOptions]="[5, 10, 20, 50, 100]"/>
+              </div>
             </div>
-            <table aria-describedby="tasks" mat-table [dataSource]="dataSource" matSort>
-              <ng-container matColumnDef="color">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td class="col-color" mat-cell *matCellDef="let task"
-                    [style.background-color]="getPriorityColor(task)"
-                ></td>
-              </ng-container>
-              <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td class="col-id" mat-cell *matCellDef="let index = index;">
-                  {{ index + 1 + taskSearchValues().pageNumber * taskSearchValues().pageSize }}
-                </td>
-              </ng-container>
-              <ng-container matColumnDef="title">
-                <th mat-header-cell *matHeaderCellDef> {{ 'TASKS.NAME' | translate }}</th>
-                <td class="col-title title pointer" mat-cell *matCellDef="let task"
-                    [class.completed]="task.completed" (click)="editTask(task)">
-                  {{ task.title }}
-                </td>
-              </ng-container>
-              <ng-container matColumnDef="date">
-                <th mat-header-cell *matHeaderCellDef> {{ 'TASKS.DATE' | translate }}</th>
-                <td class="col-date" mat-cell *matCellDef="let task"
-                    [ngClass]="{'completed': task.completed, 'nodate': task.taskDate == null}">
-                  {{ task.taskDate | taskDate }}
-                </td>
-              </ng-container>
-              <ng-container matColumnDef="priority">
-                <th mat-header-cell *matHeaderCellDef> {{ 'TASKS.PRIORITY' | translate }}</th>
-                <td class="col-priority" mat-cell *matCellDef="let task"
-                    [ngClass]="{'completed': task.completed, 'nopriority': task.priority == null}"
-                >
-                  {{ task.priority ? task.priority.title : translateWithoutPriority }}
-                </td>
-              </ng-container>
-              <ng-container matColumnDef="category">
-                <th mat-header-cell *matHeaderCellDef> {{ 'TASKS.CATEGORY' | translate }}</th>
-                <td class="col-category"
-                    mat-cell *matCellDef="let task"
-                    [ngClass]="{'completed': task.completed, 'nocategory': task.category == null}"
-                >
-                  {{ task.category ? task.category.title : translateWithoutCategory }}
-                </td>
-              </ng-container>
-              <ng-container matColumnDef="operations">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td class="col-operations text-right nopadding-right" mat-cell *matCellDef="let task">
-                  <button mat-icon-button (click)="openDeleteDialog(task)"
-                          class="delete-icon  nomargin">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                  <button mat-icon-button class="edit-icon  nomargin" (click)="editTask(task)">
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                </td>
-              </ng-container>
-              <ng-container matColumnDef="completed">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td class="col-id" mat-cell *matCellDef="let task"
-                    [class.completed]="task.completed">
-                  <mat-checkbox class="table-icon  "
-                                (click)="$event.stopPropagation()"
-                                (change)="$event ? onToggleCompleted(task) : null"
-                                [checked]="task.completed">
-                  </mat-checkbox>
-                </td>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="displayedColumns; "></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-            <mat-paginator showFirstLastButtons
-                           (page)="pageChanged($event)"
-                           [pageIndex]="taskSearchValues().pageNumber"
-                           [pageSize]="taskSearchValues().pageSize"
-                           [length]="totalTasksFound()"
-                           [pageSizeOptions]="[5, 10, 20, 50, 100]"
-            />
           </div>
-        </div>
-      </div>
+        } @else {
+          <div *ngFor="let task of tasks(); let index = index; ">
+            <div class="row">
+              <div class="col-10 nopadding-right">
+                <div class="card card-mobile" (click)="$event.stopPropagation(); editTask(task)"
+                     [ngClass]="{'background-completed': task.completed}">
+                  <div class="mobile-priority-top"
+                       [style.background-color]="getPriorityColor(task)"
+                       [ngClass]="{'background-completed': task.completed}">
+                  </div>
+                  <div class="row">
+                    <div class="mobile-title-inner  col-12 align-top">
+                      <div class="mobile-title" [class.title-completed]="task.completed">
+                        {{ task.title }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="mobile-info-inner  col-10 align-top">
+                      <div class="mobile-category">
+                        <p class="category">
+                          {{ task.category ? task.category.title : translateWithoutCategory }}
+                        </p>
+                      </div>
+                      <div *ngIf="task.priority" class="mobile-priority">
+                        <p class="priority" [style.background-color]="getPriorityColor(task)">
+                          {{ task.priority ? task.priority.title : translateWithoutPriority }}
+                        </p>
+                      </div>
+                      <div class="mobile-date" [ngClass]="{'date-completed': task.completed}">
+                        {{ task.taskDate! | taskDate }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="check col-2 align-self-center text-left pa">
+                <button mat-icon-button class="icon-button" (click)="$event.stopPropagation(); onToggleCompleted(task)"
+                        *ngIf="!task.completed">
+                  <mat-icon class="check-icon-notcompleted small-icon-button"
+                            (click)="$event.stopPropagation(); onToggleCompleted(task)">
+                    check_circle_outline
+                  </mat-icon>
+                </button>
+                <button mat-icon-button class="icon-button" (click)="$event.stopPropagation(); onToggleCompleted(task)"
+                        *ngIf="task.completed">
+                  <mat-icon class="check-icon-completed">check_circle</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-9 align-self-baseline text-left"
+                 >
+              <mat-paginator [ngClass]="{'transparent':true, 'mobile-paginator': true, 'mobile-background': isMobile}"
+                             (page)="pageChanged($event)"
+                             [pageIndex]="taskSearchValues().pageNumber"
+                             [pageSize]="taskSearchValues().pageSize" [length]="totalTasksFound()"
+                             [pageSizeOptions]="[5, 10, 20, 50, 100]"/>
+            </div>
+          </div>
+          <div class="gap20"></div>
+        }
+      }
     </div>
   </div>
+
+</div>
+
+<div class="fab icon-text" *ngIf="isMobile">
+  <button mat-fab color="primary" (click)="addNewTask()">
+    <mat-icon>add</mat-icon>
+  </button>
 </div>
 
 

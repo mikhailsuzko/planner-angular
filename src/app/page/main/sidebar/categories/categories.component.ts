@@ -23,7 +23,7 @@ import {Stat} from "../../../../dto/Stat";
     NgIf,
     NgForOf,
     NgClass,
-    MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatListModule,
+    MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatListModule,FormsModule,
     FormsModule
   ],
   templateUrl: './categories.component.html',
@@ -68,10 +68,10 @@ export class CategoriesComponent {
     });
     dialog.afterClosed().subscribe((result: DialogResult) => {
       console.log('The dialog was closed');
-      const category = result.obj;
+      const category = result.obj as Category;
       console.log('action: ' + DialogAction[result.action] + ', ' + (category ? category : 'null'));
       if (result.action == DialogAction.SAVE) {
-        this.addCategoryEvent.emit(result.obj as Category);
+        this.addCategoryEvent.emit(category);
       }
     })
   }

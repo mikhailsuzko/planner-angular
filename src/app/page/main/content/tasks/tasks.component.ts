@@ -332,6 +332,7 @@ export class TasksComponent implements OnInit {
     } else {
       this.animationState = 'hide';
     }
+    //ToDo After adding, deleting and changing task we need to recalc stat for categories
   }
 
 

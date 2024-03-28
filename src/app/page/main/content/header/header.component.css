@@ -1,0 +1,11 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.menu-icon {
+  margin: 5px;
+}
+
+.toolbar {
+  height: 60px;
+}

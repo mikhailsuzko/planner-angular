@@ -1,0 +1,15 @@
+<footer class="bg-light text-lg-start">
+  <nav class="float-left p-3">
+    <a (click)="openAboutDialog()" class="link">
+      {{ 'COMMON.ABOUT' | translate }}
+    </a>
+  </nav>
+
+  <!-- Copyright -->
+  <div class="text-right p-3 copyright">
+    © {{ year | date: 'yyyy' }}
+    <a target="_blank">{{ siteName }}</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+

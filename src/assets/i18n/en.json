@@ -17,6 +17,7 @@
     "NOT-FOUND": "Not found",
     "OUR-SITE": "Our site",
     "ABOUT": "About",
+    "ABOUT-DETAILS": "This app is designed to help you manage your to-do list",
     "BLOG": "Blog",
     "PROJECT-DESC": "Project desc for education only",
     "CATEGORY": "Category",
@@ -87,6 +88,7 @@
     "RU": "Russian"
   },
   "CATEGORY": {
+    "ADD": "Add category",
     "CATEGORIES": "Categories",
     "SEARCH": "Search categories",
     "ALL": "All tasks",

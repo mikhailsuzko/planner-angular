@@ -18,19 +18,19 @@
         </button>
       </div>
     } @else {
-      <div class="col-12 text-center">
-        <button class="add-icon" (click)="addCategory()">
-          + Добавить
+      <div class="col-12 text-center padding-top-20">
+        <button mat-raised-button color="primary" class="add-icon" (click)="addCategory()">
+          {{'CATEGORY.ADD' | translate}}
         </button>
       </div>
     }
   </div>
-</div>
+
 <hr>
 
 <!--Search category-->
 <div class="search-category-area">
-  <mat-form-field class="search-form-field">
+  <mat-form-field class="search-form-field" appearance="outline">
     <mat-label>{{ 'CATEGORY.SEARCH' | translate }}</mat-label>
     <input matInput maxlength="15" type="text" placeholder="{{'CATEGORY.SEARCH' | translate}}"
            [(ngModel)]="searchTitle"
@@ -77,5 +77,6 @@
     </mat-list-item>
   }
 </mat-selection-list>
+</div>
 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

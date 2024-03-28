@@ -70,8 +70,7 @@
 
 .card-mobile {
   border-radius: 5px;
-  margin-bottom: 10px;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .background-completed {
@@ -86,10 +85,8 @@
 }
 
 .mobile-title-inner {
-  padding: 14px;
-  padding-left: 15px;
   margin-left: 10px;
-  padding-bottom: 0;
+  padding: 10px 10px 0 15px;
 }
 
 .mobile-info-inner {
@@ -160,12 +157,10 @@
 
 
 .check-icon-notcompleted {
-  font-size: 3rem;
   color: #dadada;
 }
 
 .check-icon-completed {
-  font-size:  3rem;
   color: rgba(167, 214, 182, 0.89);
 }
 
@@ -192,7 +187,11 @@ div.card-mobile p {
 }
 
 .nowidth {
-  width: 100%;
+  width: 100% !important;
+}
+
+.auto-width {
+  width: min-content !important;
 }
 
 
@@ -229,11 +228,7 @@ div.card-mobile p {
 
 
 .mobile-founded-text {
-  color: white;
-}
-
-.founded-region{
-  margin-top: 15px;
+  color: #1b361d;
 }
 
 .desktop-task-list{
@@ -278,4 +273,33 @@ div.card-mobile p {
 
 .row.buttons {
   margin-top: 5px;
+}
+
+.icon-button {
+  width: 40px !important;
+  height: 40px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+
+  & > *[role=img] {
+    width: 32px;
+    height: 32px;
+    font-size: 32px;
+
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .mat-mdc-button-touch-target {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+.mdc-fab {
+  padding: 15px !important;
 }

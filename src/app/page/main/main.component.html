@@ -17,47 +17,51 @@
 
     />
   </div>
-  <!-- /#sidebar-wrapper -->
 
   <!-- Page Content -->
-  <div id="page-content-wrapper">
+  <div class="main-panel wrapper">
+    <nav
+      [ngClass]="{'mobile-action-bar': isMobile, '; action-bar': !isMobile}">
+      <app-header
+        [showStat]="showStat"
+        [showSearch]="showSearch"
+        [userProfile]="userProfile"
+        (toggleStatEvent)="toggleStat($event)"
+        (toggleSearchEvent)="toggleSearch($event)"
+        (settingsChangedEvent)="settingsChanged()"
 
-    <app-header
-      [showStat]="showStat"
-      [showSearch]="showSearch"
-      [userProfile]="userProfile"
-      (toggleStatEvent)="toggleStat($event)"
-      (toggleSearchEvent)="toggleSearch($event)"
-      (settingsChangedEvent)="settingsChanged()"
+        [showSidebar]="showSidebar"
+        [categoryName]="selectedCategory.id ? selectedCategory.title: allTasks"
+        (toggleSidebarEvent)="toggleMenu($event)"
+        (logoutEvent)="logout()"/>
+    </nav>
 
-      [showSidebar]="showSidebar"
-      (toggleSidebarEvent)="toggleMenu($event)"
-      (logoutEvent)="logout()"
-    />
-    <app-stat *ngIf="!isMobile"
-              [dash]="dash"
-              [showStatistics]="showStat"
-    />
-    <app-tasks
-      [tasks]="tasks"
-      [selectedCategory]="selectedCategory"
-      [taskSearchValues]="taskSearchValues"
-      [categories]="categories"
-      [totalTasksFound]="totalTaskFound"
-      [showSearch]="showSearch"
+    <div class="content">
+      <div class="container-fluid nopadding">
 
-      (addTaskEvent)="addTask($event)"
-      (updateTaskEvent)="updateTask($event)"
-      (deleteTaskEvent)="deleteTask($event)"
-      (pagingEvent)="paging($event)"
-      (toggleSearchEvent)="toggleSearch($event)"
-      (searchActionEvent)="searchTasks($event)"
-    />
+        <app-stat [dash]="dash"
+                  [showStatistics]="showStat"/>
 
+        <app-tasks
+          [tasks]="tasks"
+          [selectedCategory]="selectedCategory"
+          [taskSearchValues]="taskSearchValues"
+          [categories]="categories"
+          [totalTasksFound]="totalTaskFound"
+          [showSearch]="showSearch"
 
+          (addTaskEvent)="addTask($event)"
+          (updateTaskEvent)="updateTask($event)"
+          (deleteTaskEvent)="deleteTask($event)"
+          (pagingEvent)="paging($event)"
+          (toggleSearchEvent)="toggleSearch($event)"
+          (searchActionEvent)="searchTasks($event)"
+        />
+      </div>
+    </div>
+    <div *ngIf="!isMobile">
+      <app-footer></app-footer>
+    </div>
   </div>
 
-  <!-- /#page-content-wrapper -->
-
 </div>
-<!-- /#wrapper -->

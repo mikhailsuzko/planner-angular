@@ -26,6 +26,7 @@ import {CookieUtils} from "../../service/utils/CookieUtils";
 import {CommonUtils} from "../../service/utils/CommonUtils";
 import {TokenUtils} from "../../service/utils/TokenUtils";
 import {SpinnerService} from "../../service/spinner.service";
+import {FooterComponent} from "./content/footer/footer.component";
 
 export const LANG_RU = 'ru';
 export const LANG_EN = 'en';
@@ -36,7 +37,7 @@ export const LANG_EN = 'en';
   standalone: true,
   imports: [
     NgIf, NgClass, CategoriesComponent,
-    MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, HeaderComponent, StatComponent, TasksComponent, AsyncPipe
+    MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, HeaderComponent, StatComponent, TasksComponent, AsyncPipe, FooterComponent
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css',
@@ -83,6 +84,7 @@ export class MainComponent implements OnInit {
   }
 
   showSidebar: boolean = true;
+  allTasks!: string;
 
   toggleMenu(showSidebar: boolean) {
     this.showSidebar = showSidebar;
@@ -93,11 +95,11 @@ export class MainComponent implements OnInit {
     console.log("MainComponent -> ngOnInit");
     this.isMobile = this.deviceService.isMobile();
     this.isTablet = this.deviceService.isTablet();
-
     this.initSidebar()
     this.initLangCookie();
     if (this.isMobile) {
       this.showStat = false;
+      this.showSidebar = false;
     } else {
       this.initShowStatCookie();
     }
@@ -107,7 +109,16 @@ export class MainComponent implements OnInit {
     this.requestUserProfile();
     this.requestCategories(true);
     this.updateOverallStat();
+    this.initTranslations();
   }
+
+  initTranslations(): void {
+    this.translateService.get(['TASKS.ALL'])
+      .subscribe((res: any) => {
+        this.allTasks = res['TASKS.ALL'];
+      });
+  }
+
 
   initSidebar(): void {
     if (this.isMobile) {
@@ -180,8 +191,8 @@ export class MainComponent implements OnInit {
 
   addCategory(category: Category): void {
     this.categoryService.add(category).subscribe({
-        next: (result => {
-          console.log("Category '" + category.title + "' is added");
+        next: (cat => {
+          console.log("Category '" + cat.title + " is added");
           this.requestCategories();
         }),
         error: (error => {

@@ -15023,14 +15023,6 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   transition: opacity 0.1s linear 0s !important;
 }
 
-.footer {
-  padding: 0.9375rem 0;
-  text-align: center;
-  display: -webkit-flex;
-  /* Safari */
-  /* Safari 6.1+ */
-  display: flex;
-}
 
 .footer ul {
   margin-bottom: 0;
@@ -15547,9 +15539,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 }
 
 .main-panel > .content {
-  margin-top: 70px;
-  padding: 30px 15px;
-  min-height: calc(100vh - 123px);
+  min-height: calc(100vh - 120px);
 }
 
 .main-panel > .footer {

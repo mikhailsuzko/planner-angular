@@ -14,7 +14,6 @@ body {
 }
 
 .main-panel > .content {
-  margin-top: 60px;
   background-color: transparent !important;
   padding: 0;
   margin-left: 0;
@@ -362,16 +361,19 @@ app-header {
 }
 
 .nopadding-bottom {
-  padding-bottom: 0px !important;
+  padding-bottom: 0 !important;
 }
 
+.padding-25-nopadding-bottom {
+  padding: 25px 0 0 25px !important;
+}
 
 .max-width-60 {
   max-width: 60px !important;
 }
 
 .padding-25 {
-  padding: 25px;
+  padding: 25px !important;
 }
 
 .no-padding-top {
@@ -393,15 +395,25 @@ app-header {
   padding-bottom: 20px !important;
 }
 
+.padding-top-20 {
+  padding-top: 20px !important;
+}
+
 .mobile-action-bar {
   box-shadow: 0 4px 20px -2px #110808 !important;
   padding-bottom: 0px;
   background-color: #f6f6f6 !important;
 }
 
+.action-bar {
+  box-shadow: 0 10px 10px -5px #a8a8a8 !important;
+  padding-bottom: 0;
+  background-color: #f6f6f6 !important;
+}
+
 
 .mobile-background {
-  background-color: rgb(95, 127, 127) !important;
+  background-color: rgb(209, 231, 227) !important;
 }
 
 .action-bar-item {
@@ -420,7 +432,7 @@ app-header {
 .fab {
   position: fixed;
   display: flex;
-  bottom: 5%;
+  bottom: 3%;
   right: 5%;
 }
 
@@ -445,6 +457,10 @@ app-header {
 
 .padding-right-15 {
   padding-right: 15px !important;
+}
+
+.padding-right-30 {
+  padding-right: 30px !important;
 }
 
 .nopadding-right {

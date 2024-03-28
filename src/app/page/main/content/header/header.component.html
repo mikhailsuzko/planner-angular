@@ -1,81 +1,67 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-
-  <div class="container-fluid">
-    <button mat-icon-button color="primary" (click)="onToggleMenu()">
-      <mat-icon>menu</mat-icon>
+<mat-toolbar class="toolbar container-fluid">
+  <button mat-icon-button (click)="onToggleMenu()" color="primary" aria-label="Example icon-button with menu icon">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="padding-15">{{ categoryName() }}</span>
+  <span class="spacer"></span>
+  @if (isMobile) {
+    <button mat-icon-button class="menu-icon" (click)="onToggleStat()">
+      <mat-icon>moving</mat-icon>
     </button>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+    <button mat-icon-button class="menu-icon" (click)="onToggleSearch()">
+      <mat-icon>search</mat-icon>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" (click)="onToggleStat()">
-            @if (showStat()) {
-              {{ 'STAT.HIDE' |translate }}
-            } @else {
-              {{ 'STAT.SHOW' |translate }}
-            }
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" (click)="onToggleSearch()">
-            @if (showSearch()) {
-              {{ 'TASKS.HIDE' |translate }}
-            } @else {
-              {{ 'TASKS.SHOW' |translate }}
-            }
-          </a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-             aria-expanded="false">
-            Dropdown
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li>
-      </ul>
-      <button class="btn btn-outline-success" type="button" (click)="logout()">Logout</button>
-      <button mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <p class="text-center padding-25 account">
-          {{email}}
-        </p>
-        <button mat-menu-item (click)="showSettings()">
-          <mat-icon>settings</mat-icon>
-          <span>{{'COMMON.SETTINGS' | translate}}</span>
-        </button>
+  } @else {
 
-        <!--                справка-->
-        <button mat-menu-item *ngIf="!isMobile" class="header-icon">
-          <mat-icon>help</mat-icon>
-          <span>{{'COMMON.HELP' | translate}}</span>
-        </button>
+    <!-- Stat -->
+    <button *ngIf="showStat()" class="btn btn-outline-success" type="button" (click)="onToggleStat()">
+      <mat-icon>moving</mat-icon>
+      {{ 'STAT.HIDE' |translate }}
+    </button>
+    <button *ngIf="!showStat()" class="btn btn-outline-success" type="button" (click)="onToggleStat()">
+      <mat-icon>moving</mat-icon>
+      {{ 'STAT.SHOW' |translate }}
+    </button>
 
-        <!--                выход из системы-->
-        <button mat-menu-item (click)="logout()">
-          <mat-icon>login</mat-icon>
-          <span>{{'COMMON.EXIT' | translate}}</span>
-        </button>
+    <!-- Search -->
+    <button *ngIf="showSearch()" class="btn btn-outline-success" type="button" (click)="onToggleSearch()">
+      <mat-icon>search</mat-icon>
+      {{ 'TASKS.HIDE' |translate }}
+    </button>
+    <button *ngIf="!showSearch()" class="btn btn-outline-success" type="button" (click)="onToggleSearch()">
+      <mat-icon>search</mat-icon>
+      {{ 'TASKS.SHOW' |translate }}
+    </button>
 
+    <button class="btn btn-outline-success" type="button" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      {{ 'COMMON.EXIT' | translate }}
+    </button>
 
-      </mat-menu>
-    </div>
-  </div>
-</nav>
+  }
+  <button mat-icon-button class="menu-icon" [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu">
+    <p class="text-center padding-25 account">
+      {{ email }}
+    </p>
+
+    <button mat-menu-item (click)="showSettings()">
+      <mat-icon>settings</mat-icon>
+      <span>{{ 'COMMON.SETTINGS' | translate }}</span>
+    </button>
+
+    <button mat-menu-item *ngIf="!isMobile" class="header-icon">
+      <mat-icon>help</mat-icon>
+      <span>{{ 'COMMON.HELP' | translate }}</span>
+    </button>
+
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span>{{ 'COMMON.EXIT' | translate }}</span>
+    </button>
+
+  </mat-menu>
+</mat-toolbar>

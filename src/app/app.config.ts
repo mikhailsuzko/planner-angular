@@ -30,7 +30,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideHttpClient(withInterceptors([cookiesInterceptor, spinnerInterceptor])),
     provideNativeDateAdapter(),
-    {provide: UTILS_URL, useValue: environment.backendUrl + '/data'},
+    {provide: UTILS_URL, useValue: environment.backendUrl + '/auth'},
     {provide: TASK_URL, useValue: environment.backendUrl + '/task'},
     {provide: CATEGORY_URL, useValue: environment.backendUrl + '/category'},
     {provide: PRIORITY_URL, useValue: environment.backendUrl + '/priority'},

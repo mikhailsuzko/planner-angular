@@ -8,7 +8,8 @@ export class CommonUtils {
   }
 
   public processError(method: string, error: any, callback: Function) {
-    console.log(method + " -> error: " + error.status + ": " + error.message);
+    console.log(method + " -> error: " + error.error);
+    console.log(method + " -> status: " + error.status);
     if (error && error.status === 403) {
       this.tokenUtils.exchangeRefreshToken(callback);
     }
