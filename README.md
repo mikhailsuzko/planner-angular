@@ -1,4 +1,4 @@
-# task-planning-anfular
+# planner-angular
 This is a task planning frontend application written in Angular
 
 # Project description
